@@ -1,0 +1,4 @@
+build\
+build_x64\
+msvc\gtest-md\
+msvc\gtest\

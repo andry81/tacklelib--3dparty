@@ -1,0 +1,5 @@
+__build-*\
+bin.v2\
+stage\
+stage-x64\
+project-config.jam

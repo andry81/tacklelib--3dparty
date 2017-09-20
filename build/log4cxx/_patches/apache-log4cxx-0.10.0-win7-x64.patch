@@ -1,0 +1,534 @@
+Binary files log4cxx-0.10.0\open.obj and log4cxx-0.10.0\open.obj differ
+diff -rupN log4cxx-0.10.0\src\ant\apr-build.xml log4cxx-0.10.0\src\ant\apr-build.xml
+--- log4cxx-0.10.0\src\ant\apr-build.xml	Tue Apr 01 06:33:52 2008
++++ log4cxx-0.10.0\src\ant\apr-build.xml	Wed Jul 07 16:19:00 2010
+@@ -127,6 +127,7 @@ and the C++ compilation tasks from http:
+         <fileset dir="${src.dir}/network_io/unix"
+             includes="inet_ntop.c inet_pton.c sockaddr.c"/>
+         <fileset dir="${src.dir}/poll/unix" includes="select.c"/>
++		<fileset dir="${src.dir}/poll/unix" includes="pollset.c"/>
+         <fileset dir="${src.dir}/random/unix" includes="*.c"/>
+         <fileset dir="${src.dir}/strings" includes="*.c"/>
+         <fileset dir="${src.dir}/tables" includes="*.c"/>
+@@ -143,6 +144,7 @@ and the C++ compilation tasks from http:
+         <defineset define="APR_DECLARE_STATIC" unless="is-shared"/>
+         <defineset if="is-windows">
+             <define name="WIN32" value="1"/>
++			<define name="WINNT" value="1"/>
+         </defineset>
+         <defineset define="_HAVE_CONFIG_H _REENTRANT _GNU_SOURCE" if="is-gcc"/>
+         <defineset define="HAVE_CONFIG_H DARWIN SIGPROCMASK_SETS_THREAD_MASK" if="is-mac"/>
+@@ -175,6 +177,7 @@ and the C++ compilation tasks from http:
+         <includepath path="${include.dir}"/>
+         <defineset if="is-windows">
+             <define name="WIN32" value="1"/>
++			<define name="WINNT" value="1"/>
+         </defineset>
+         <defineset define="_HAVE_CONFIG_H _REENTRANT _GNU_SOURCE" if="is-gcc"/>
+         <defineset define="APR_DECLARE_STATIC" unless="is-shared"/>
+diff -rupN log4cxx-0.10.0\src\ant\apr-util-build.xml log4cxx-0.10.0\src\ant\apr-util-build.xml
+--- log4cxx-0.10.0\src\ant\apr-util-build.xml	Tue Apr 01 06:33:52 2008
++++ log4cxx-0.10.0\src\ant\apr-util-build.xml	Wed Jul 07 16:28:04 2010
+@@ -208,6 +208,9 @@ and the C++ compilation tasks from http:
+             <define name="XMLPARSEAPI" value=" "/>
+         </defineset>
+         <defineset define="WIN32" if="is-windows"/>
++		<defineset define="APU_DSO_MODULE_BUILD" if="is-windows"/>
++		<defineset define="APU_HAVE_ODBC=1" if="is-windows"/>
++		<defineset define="HAVE_SQL_H" if="is-windows"/>
+         <defineset define="_HAVE_CONFIG_H _REENTRANT _GNU_SOURCE" if="is-gcc"/>
+         <compilerarg value="${pic-option}" if="pic-option"/>
+ 
+diff -rupN log4cxx-0.10.0\src\main\cpp\loggingevent.cpp log4cxx-0.10.0\src\main\cpp\loggingevent.cpp
+--- log4cxx-0.10.0\src\main\cpp\loggingevent.cpp	Tue Apr 01 06:34:10 2008
++++ log4cxx-0.10.0\src\main\cpp\loggingevent.cpp	Tue Jul 06 19:47:46 2010
+@@ -124,9 +124,9 @@ bool LoggingEvent::getMDC(const LogStrin
+ 
+ }
+ 
+-LoggingEvent::KeySet LoggingEvent::getMDCKeySet() const
++KeySet LoggingEvent::getMDCKeySet() const
+ {
+-        LoggingEvent::KeySet set;
++        KeySet set;
+ 
+         if (mdcCopy != 0 && !mdcCopy->empty())
+         {
+@@ -185,9 +185,9 @@ bool LoggingEvent::getProperty(const Log
+         return false;
+ }
+ 
+-LoggingEvent::KeySet LoggingEvent::getPropertyKeySet() const
++KeySet LoggingEvent::getPropertyKeySet() const
+ {
+-        LoggingEvent::KeySet set;
++        KeySet set;
+ 
+         if (properties != 0)
+         {
+diff -rupN log4cxx-0.10.0\src\main\cpp\propertiespatternconverter.cpp log4cxx-0.10.0\src\main\cpp\propertiespatternconverter.cpp
+--- log4cxx-0.10.0\src\main\cpp\propertiespatternconverter.cpp	Tue Apr 01 06:34:10 2008
++++ log4cxx-0.10.0\src\main\cpp\propertiespatternconverter.cpp	Tue Jul 06 19:44:43 2010
+@@ -59,9 +59,9 @@ void PropertiesPatternConverter::format(
+     if (option.length() == 0) {
+       toAppendTo.append(1, (logchar) 0x7B /* '{' */);
+ 
+-      LoggingEvent::KeySet keySet(event->getMDCKeySet());
++      KeySet keySet(event->getMDCKeySet());
+ 
+-      for(LoggingEvent::KeySet::const_iterator iter = keySet.begin();
++      for(KeySet::const_iterator iter = keySet.begin();
+           iter != keySet.end();
+           iter++) {
+           toAppendTo.append(1, (logchar) 0x7B /* '{' */);
+diff -rupN log4cxx-0.10.0\src\main\cpp\stringhelper.cpp log4cxx-0.10.0\src\main\cpp\stringhelper.cpp
+--- log4cxx-0.10.0\src\main\cpp\stringhelper.cpp	Tue Apr 01 06:34:10 2008
++++ log4cxx-0.10.0\src\main\cpp\stringhelper.cpp	Tue Jul 06 19:48:25 2010
+@@ -29,6 +29,7 @@
+ #include <log4cxx/private/log4cxx_private.h>
+ #include <cctype>
+ #include <apr.h>
++#include <iterator>
+ 
+ 
+ using namespace log4cxx;
+diff -rupN log4cxx-0.10.0\src\main\cpp\xmllayout.cpp log4cxx-0.10.0\src\main\cpp\xmllayout.cpp
+--- log4cxx-0.10.0\src\main\cpp\xmllayout.cpp	Tue Apr 01 06:34:10 2008
++++ log4cxx-0.10.0\src\main\cpp\xmllayout.cpp	Tue Jul 06 19:49:20 2010
+@@ -101,12 +101,12 @@ void XMLLayout::format(LogString& output
+         }
+         
+         if (properties) {
+-            LoggingEvent::KeySet propertySet(event->getPropertyKeySet());
+-            LoggingEvent::KeySet keySet(event->getMDCKeySet());
++            KeySet propertySet(event->getPropertyKeySet());
++            KeySet keySet(event->getMDCKeySet());
+             if (!(keySet.empty() && propertySet.empty())) {
+                 output.append(LOG4CXX_STR("<log4j:properties>"));
+                 output.append(LOG4CXX_EOL);
+-                for (LoggingEvent::KeySet::const_iterator i = keySet.begin();
++                for (KeySet::const_iterator i = keySet.begin();
+                         i != keySet.end(); 
+                         i++) {
+                         LogString key(*i);
+@@ -120,7 +120,7 @@ void XMLLayout::format(LogString& output
+                             output.append(LOG4CXX_EOL);
+                         }
+                 }
+-            for (LoggingEvent::KeySet::const_iterator i2 = propertySet.begin();
++            for (KeySet::const_iterator i2 = propertySet.begin();
+                         i2 != propertySet.end(); 
+                         i2++) {
+                         LogString key(*i2);
+diff -rupN log4cxx-0.10.0\src\main\include\log4cxx\asyncappender.h log4cxx-0.10.0\src\main\include\log4cxx\asyncappender.h
+--- log4cxx-0.10.0\src\main\include\log4cxx\asyncappender.h	Tue Apr 01 06:34:42 2008
++++ log4cxx-0.10.0\src\main\include\log4cxx\asyncappender.h	Tue Jul 06 19:41:44 2010
+@@ -35,7 +35,7 @@
+ 
+ namespace log4cxx
+ {
+-
++		LOG4CXX_LIST_DEF(LoggingEventList, log4cxx::spi::LoggingEventPtr);
+         /**
+         The AsyncAppender lets users log events asynchronously. It uses a
+         bounded buffer to store logging events.
+@@ -194,7 +194,7 @@ namespace log4cxx
+                 /**
+                  * Event buffer.
+                 */
+-                LOG4CXX_LIST_DEF(LoggingEventList, log4cxx::spi::LoggingEventPtr);
++                
+                 LoggingEventList buffer;
+ 
+                 /**
+diff -rupN log4cxx-0.10.0\src\main\include\log4cxx\helpers\bytearrayinputstream.h log4cxx-0.10.0\src\main\include\log4cxx\helpers\bytearrayinputstream.h
+--- log4cxx-0.10.0\src\main\include\log4cxx\helpers\bytearrayinputstream.h	Tue Apr 01 06:34:26 2008
++++ log4cxx-0.10.0\src\main\include\log4cxx\helpers\bytearrayinputstream.h	Tue Jul 06 19:45:24 2010
+@@ -32,6 +32,7 @@ namespace log4cxx
+ {
+ 
+         namespace helpers {
++		LOG4CXX_LIST_DEF(ByteList, unsigned char);
+ 
+           /**
+            * InputStream implemented on top of a byte array.
+@@ -39,7 +40,7 @@ namespace log4cxx
+           class LOG4CXX_EXPORT ByteArrayInputStream : public InputStream
+           {
+           private:
+-              LOG4CXX_LIST_DEF(ByteList, unsigned char);
++              
+               ByteList buf;
+               size_t pos;
+ 
+diff -rupN log4cxx-0.10.0\src\main\include\log4cxx\helpers\bytearrayoutputstream.h log4cxx-0.10.0\src\main\include\log4cxx\helpers\bytearrayoutputstream.h
+--- log4cxx-0.10.0\src\main\include\log4cxx\helpers\bytearrayoutputstream.h	Tue Apr 01 06:34:26 2008
++++ log4cxx-0.10.0\src\main\include\log4cxx\helpers\bytearrayoutputstream.h	Tue Jul 06 19:50:14 2010
+@@ -35,13 +35,14 @@ namespace log4cxx
+         namespace helpers {
+           class Pool;
+ 
++		  LOG4CXX_LIST_DEF(ByteList, unsigned char);
+           /**
+           *   OutputStream implemented on top of std::vector
+           */
+           class LOG4CXX_EXPORT ByteArrayOutputStream : public OutputStream
+           {
+           private:
+-                 LOG4CXX_LIST_DEF(ByteList, unsigned char);
++                 
+                  ByteList array;
+ 
+           public:
+diff -rupN log4cxx-0.10.0\src\main\include\log4cxx\helpers\simpledateformat.h log4cxx-0.10.0\src\main\include\log4cxx\helpers\simpledateformat.h
+--- log4cxx-0.10.0\src\main\include\log4cxx\helpers\simpledateformat.h	Tue Apr 01 06:34:26 2008
++++ log4cxx-0.10.0\src\main\include\log4cxx\helpers\simpledateformat.h	Tue Jul 06 19:33:11 2010
+@@ -38,6 +38,8 @@ namespace log4cxx
+           namespace SimpleDateFormatImpl {
+             class PatternToken;
+         }
++		
++			LOG4CXX_LIST_DEF(PatternTokenList, log4cxx::helpers::SimpleDateFormatImpl::PatternToken*);
+ 
+           /**
+            * Concrete class for formatting and parsing dates in a
+@@ -75,7 +77,7 @@ namespace log4cxx
+                   /**
+                    * List of tokens.
+                    */
+-                  LOG4CXX_LIST_DEF(PatternTokenList, log4cxx::helpers::SimpleDateFormatImpl::PatternToken*);
++                  
+ 
+                   PatternTokenList pattern;
+                   
+diff -rupN log4cxx-0.10.0\src\main\include\log4cxx\helpers\socketoutputstream.h log4cxx-0.10.0\src\main\include\log4cxx\helpers\socketoutputstream.h
+--- log4cxx-0.10.0\src\main\include\log4cxx\helpers\socketoutputstream.h	Tue Apr 01 06:34:26 2008
++++ log4cxx-0.10.0\src\main\include\log4cxx\helpers\socketoutputstream.h	Tue Jul 06 19:41:02 2010
+@@ -32,6 +32,7 @@ namespace log4cxx
+ {
+         namespace helpers
+         {
++		LOG4CXX_LIST_DEF(ByteList, unsigned char);
+ 
+                 class LOG4CXX_EXPORT SocketOutputStream : public OutputStream
+                 {
+@@ -50,7 +51,7 @@ namespace log4cxx
+                         virtual void write(ByteBuffer& buf, Pool& p);
+ 
+                 private:
+-                        LOG4CXX_LIST_DEF(ByteList, unsigned char);
++                        
+                         ByteList array;
+                         SocketPtr socket;
+                        //
+diff -rupN log4cxx-0.10.0\src\main\include\log4cxx\log4cxx.h log4cxx-0.10.0\src\main\include\log4cxx\log4cxx.h
+--- log4cxx-0.10.0\src\main\include\log4cxx\log4cxx.h	Thu Jan 01 08:00:00 1970
++++ log4cxx-0.10.0\src\main\include\log4cxx\log4cxx.h	Wed Jul 07 13:47:38 2010
+@@ -0,0 +1,99 @@
++/* Licensed to the Apache Software Foundation (ASF) under one or more
++ * contributor license agreements.  See the NOTICE file distributed with
++ * this work for additional information regarding copyright ownership.
++ * The ASF licenses this file to You under the Apache License, Version 2.0
++ * (the "License"); you may not use this file except in compliance with
++ * the License.  You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#ifndef LOG4CXX_LOG4CXX_H
++#define LOG4CXX_LOG4CXX_H
++
++/* GENERATED FILE WARNING!  DO NOT EDIT log4cxx.h
++ *
++ * Edit log4cxx.hw instead
++ *
++ */
++
++#define LOG4CXX_LOGCHAR_IS_UTF8 0
++#if LOG4CXX_LOGCHAR_IS_UTF8
++#define LOG4CXX_LOGCHAR_IS_WCHAR 0
++#else
++#define LOG4CXX_LOGCHAR_IS_WCHAR 1
++#endif
++#define LOG4CXX_LOGCHAR_IS_UNICHAR 0
++
++#define LOG4CXX_CHAR_API 1
++#define LOG4CXX_WCHAR_T_API 1
++#define LOG4CXX_UNICHAR_API 0
++#define LOG4CXX_CFSTRING_API 0
++
++#if defined(_MSC_VER)
++typedef __int64 log4cxx_int64_t;
++#if _MSC_VER < 1300
++#define LOG4CXX_USE_GLOBAL_SCOPE_TEMPLATE 1
++#define LOG4CXX_LOGSTREAM_ADD_NOP 1
++#endif
++#elif defined(__BORLANDC__)
++typedef __int64 log4cxx_int64_t;
++#else
++typedef long long log4cxx_int64_t;
++#endif
++
++typedef log4cxx_int64_t log4cxx_time_t;
++typedef int log4cxx_status_t;
++typedef unsigned int log4cxx_uint32_t;
++
++//  definitions used when using static library
++#if defined(LOG4CXX_STATIC)
++#define LOG4CXX_EXPORT
++//   definitions used when building DLL
++#elif defined(LOG4CXX)
++#define LOG4CXX_EXPORT __declspec(dllexport)
++#else
++//    definitions used when using DLL
++#define LOG4CXX_EXPORT __declspec(dllimport)
++#endif
++
++
++//
++//   pointer and list definition macros when building DLL using VC
++//
++#if defined(_MSC_VER) && !defined(LOG4CXX_STATIC) && defined(LOG4CXX)
++#define LOG4CXX_PTR_DEF(T) \
++template class LOG4CXX_EXPORT log4cxx::helpers::ObjectPtrT<T>; \
++typedef log4cxx::helpers::ObjectPtrT<T> T##Ptr
++#define LOG4CXX_LIST_DEF(N, T) \
++template class LOG4CXX_EXPORT std::allocator<T>; \
++template class LOG4CXX_EXPORT std::vector<T>; \
++typedef std::vector<T> N
++//
++//   pointer and list definition macros when linking with DLL using VC
++//
++#elif defined(_MSC_VER) && !defined(LOG4CXX_STATIC)
++#define LOG4CXX_PTR_DEF(T) \
++extern template class LOG4CXX_EXPORT log4cxx::helpers::ObjectPtrT<T>; \
++typedef log4cxx::helpers::ObjectPtrT<T> T##Ptr
++#define LOG4CXX_LIST_DEF(N, T) \
++extern template class LOG4CXX_EXPORT std::allocator<T>; \
++extern template class LOG4CXX_EXPORT std::vector<T>; \
++typedef std::vector<T> N
++//
++//   pointer and list definition macros for all other cases
++//
++#else
++#define LOG4CXX_PTR_DEF(T) typedef log4cxx::helpers::ObjectPtrT<T> T##Ptr
++#define LOG4CXX_LIST_DEF(N, T) typedef std::vector<T> N
++#endif
++
++
++#endif
++
+diff -rupN log4cxx-0.10.0\src\main\include\log4cxx\net\sockethubappender.h log4cxx-0.10.0\src\main\include\log4cxx\net\sockethubappender.h
+--- log4cxx-0.10.0\src\main\include\log4cxx\net\sockethubappender.h	Tue Apr 01 06:34:40 2008
++++ log4cxx-0.10.0\src\main\include\log4cxx\net\sockethubappender.h	Tue Jul 06 19:42:45 2010
+@@ -38,6 +38,7 @@ namespace log4cxx
+         }
+         namespace net
+         {
++				LOG4CXX_LIST_DEF(ObjectOutputStreamList, log4cxx::helpers::ObjectOutputStreamPtr);
+                 /**
+                 Sends {@link log4cxx::spi::LoggingEvent LoggingEvent} objects to a set of remote log
+                 servers, usually a SocketNode.
+@@ -112,7 +113,7 @@ namespace log4cxx
+                         static int DEFAULT_PORT;
+ 
+                         int port;
+-                        LOG4CXX_LIST_DEF(ObjectOutputStreamList, log4cxx::helpers::ObjectOutputStreamPtr);
++                        
+                         ObjectOutputStreamList streams;
+                         bool locationInfo;
+ 
+diff -rupN log4cxx-0.10.0\src\main\include\log4cxx\net\telnetappender.h log4cxx-0.10.0\src\main\include\log4cxx\net\telnetappender.h
+--- log4cxx-0.10.0\src\main\include\log4cxx\net\telnetappender.h	Tue Apr 01 06:34:40 2008
++++ log4cxx-0.10.0\src\main\include\log4cxx\net\telnetappender.h	Tue Jul 06 19:37:35 2010
+@@ -39,6 +39,8 @@ namespace log4cxx
+         }
+         namespace net
+         {
++		typedef log4cxx::helpers::SocketPtr Connection;
++		LOG4CXX_LIST_DEF(ConnectionList, Connection);
+ /**
+ <p>The TelnetAppender is a log4cxx appender that specializes in
+ writing to a read-only socket.  The output is provided in a
+@@ -131,8 +133,8 @@ servlet.
+                         TelnetAppender(const TelnetAppender&);
+                         TelnetAppender& operator=(const TelnetAppender&);
+ 
+-                        typedef log4cxx::helpers::SocketPtr Connection;
+-                        LOG4CXX_LIST_DEF(ConnectionList, Connection);
++                        
++                        
+                         
+                         void write(log4cxx::helpers::ByteBuffer&);
+                         void writeStatus(const log4cxx::helpers::SocketPtr& socket, const LogString& msg, log4cxx::helpers::Pool& p);
+diff -rupN log4cxx-0.10.0\src\main\include\log4cxx\patternlayout.h log4cxx-0.10.0\src\main\include\log4cxx\patternlayout.h
+--- log4cxx-0.10.0\src\main\include\log4cxx\patternlayout.h	Tue Apr 01 06:34:42 2008
++++ log4cxx-0.10.0\src\main\include\log4cxx\patternlayout.h	Tue Jul 06 19:40:28 2010
+@@ -32,7 +32,8 @@
+ 
+ namespace log4cxx
+ {
+-
++		LOG4CXX_LIST_DEF(LoggingEventPatternConverterList, log4cxx::pattern::LoggingEventPatternConverterPtr);
++		LOG4CXX_LIST_DEF(FormattingInfoList, log4cxx::pattern::FormattingInfoPtr);
+         /**
+ 
+         A flexible layout configurable with pattern string.
+@@ -334,13 +335,13 @@ namespace log4cxx
+                 /**
+                  * Pattern converters.
+                  */
+-                LOG4CXX_LIST_DEF(LoggingEventPatternConverterList, log4cxx::pattern::LoggingEventPatternConverterPtr);
++                
+                 LoggingEventPatternConverterList patternConverters;
+ 
+                /**
+                 * Field widths and alignment corresponding to pattern converters.
+                 */
+-                LOG4CXX_LIST_DEF(FormattingInfoList, log4cxx::pattern::FormattingInfoPtr);
++                
+                 FormattingInfoList patternFields;
+ 
+ 
+diff -rupN log4cxx-0.10.0\src\main\include\log4cxx\private\log4cxx_private.h log4cxx-0.10.0\src\main\include\log4cxx\private\log4cxx_private.h
+--- log4cxx-0.10.0\src\main\include\log4cxx\private\log4cxx_private.h	Thu Jan 01 08:00:00 1970
++++ log4cxx-0.10.0\src\main\include\log4cxx\private\log4cxx_private.h	Tue Apr 01 06:34:42 2008
+@@ -0,0 +1,84 @@
++/* Licensed to the Apache Software Foundation (ASF) under one or more
++ * contributor license agreements.  See the NOTICE file distributed with
++ * this work for additional information regarding copyright ownership.
++ * The ASF licenses this file to You under the Apache License, Version 2.0
++ * (the "License"); you may not use this file except in compliance with
++ * the License.  You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++
++#ifndef LOG4CXX_PRIVATE_LOG4CXX_H
++#define LOG4CXX_PRIVATE_LOG4CXX_H
++
++
++/* GENERATED FILE WARNING!  DO NOT EDIT log4cxx.h
++ *
++ * You must modify log4cxx.hw instead.
++ *
++ *
++ * This is the Win32 specific version of log4cxx.h.
++ */
++
++#include <log4cxx/log4cxx.h>
++
++#if !defined(LOG4CXX) && !defined(LOG4CXX_TEST)
++#error "log4cxx/private/log4cxx.h should only be used within log4cxx and tests implementation"
++#endif
++
++
++#if !defined(__BORLANDC__)
++#define LOG4CXX_RETURN_AFTER_THROW 1
++#else
++#define LOG4CXX_RETURN_AFTER_THROW 0
++#endif
++
++#if defined(_WIN32_WCE)
++#define LOG4CXX_HAS_STD_LOCALE 0
++#else
++#define LOG4CXX_HAS_STD_LOCALE 1
++#endif
++
++#define LOG4CXX_FORCE_WIDE_CONSOLE 1
++#define LOG4CXX_FORCE_BYTE_CONSOLE 0
++
++
++#if defined(_MSC_VER)
++#define LOG4CXX_MEMSET_IOS_BASE 1
++#endif
++
++#if !defined(_WIN32_WCE)
++#define LOG4CXX_HAVE_ODBC 1
++#if defined(__BORLANDC__)
++#define LOG4CXX_HAS_MBSRTOWCS 0
++#else
++#define LOG4CXX_HAS_MBSRTOWCS 1
++#endif
++#else
++#define LOG4CXX_HAVE_ODBC 0
++#define LOG4CXX_HAS_MBSRTOWCS 0
++#endif
++
++#define LOG4CXX_HAS_FWIDE 1
++#define LOG4CXX_HAS_WCSTOMBS 1
++
++#define LOG4CXX_CHARSET_UTF8 0
++#define LOG4CXX_CHARSET_ISO88591 0
++#define LOG4CXX_CHARSET_USASCII 0
++#define LOG4CXX_CHARSET_EBCDIC 0
++
++
++#define LOG4CXX_HAVE_LIBESMTP 0
++#define LOG4CXX_HAVE_SYSLOG 0
++
++#define LOG4CXX_WIN32_THREAD_FMTSPEC "0x%.8x"
++#define LOG4CXX_APR_THREAD_FMTSPEC "0x%pt"
++
++#endif
+diff -rupN log4cxx-0.10.0\src\main\include\log4cxx\rolling\rollingpolicybase.h log4cxx-0.10.0\src\main\include\log4cxx\rolling\rollingpolicybase.h
+--- log4cxx-0.10.0\src\main\include\log4cxx\rolling\rollingpolicybase.h	Tue Apr 01 06:34:30 2008
++++ log4cxx-0.10.0\src\main\include\log4cxx\rolling\rollingpolicybase.h	Tue Jul 06 19:33:57 2010
+@@ -34,6 +34,8 @@
+ 
+ namespace log4cxx {
+     namespace rolling {
++	LOG4CXX_LIST_DEF(PatternConverterList, log4cxx::pattern::PatternConverterPtr);
++	LOG4CXX_LIST_DEF(FormattingInfoList, log4cxx::pattern::FormattingInfoPtr);
+ 
+         /**
+          * Implements methods common to most, it not all, rolling
+@@ -57,13 +59,13 @@ namespace log4cxx {
+           /**
+            * File name pattern converters.
+            */
+-          LOG4CXX_LIST_DEF(PatternConverterList, log4cxx::pattern::PatternConverterPtr);
++          
+           PatternConverterList patternConverters;
+ 
+           /**
+            * File name field specifiers.
+            */
+-          LOG4CXX_LIST_DEF(FormattingInfoList, log4cxx::pattern::FormattingInfoPtr);
++          
+           FormattingInfoList patternFields;
+ 
+           /**
+diff -rupN log4cxx-0.10.0\src\main\include\log4cxx\spi\loggingevent.h log4cxx-0.10.0\src\main\include\log4cxx\spi\loggingevent.h
+--- log4cxx-0.10.0\src\main\include\log4cxx\spi\loggingevent.h	Tue Apr 01 06:34:14 2008
++++ log4cxx-0.10.0\src\main\include\log4cxx\spi\loggingevent.h	Tue Jul 06 19:31:06 2010
+@@ -44,6 +44,7 @@ namespace log4cxx
+         namespace spi
+         {
+ 
++				LOG4CXX_LIST_DEF(KeySet, LogString);
+                 /**
+                 The internal representation of logging events. When an affirmative
+                 decision is made to log then a <code>LoggingEvent</code> instance
+@@ -152,7 +153,7 @@ namespace log4cxx
+                         */
+                         bool getMDC(const LogString& key, LogString& dest) const;
+ 
+-                        LOG4CXX_LIST_DEF(KeySet, LogString);
++                        
+                         /**
+                         * Returns the set of of the key values in the MDC for the event.
+                         * The returned set is unmodifiable by the caller.

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# for gnu make debugging
+# "SHELL=\$(warning \$@: \$(word \$(words \$(MAKEFILE_LIST)),\$(MAKEFILE_LIST)): \$(CURDIR): \$(if \$<, (from \$<))\$(if \$?, (\$? newer)))${SHELL} -x"
+
+function build() {
+  echo ">$@"
+  eval '"$@"'
+}
+
+build perl.exe "${ACE_ROOT//\\/\/}/bin/mwc.pl" TAO_ACE.mwc -type $MWC_TYPE
+
+#build "${MSBUILD_PATH//\\/\/}/MSBuild.exe" TAO_ACE.sln "/t:PortableServer;CosNaming;Messaging;BiDir_GIOP;CodecFactory;AnyTypeCode;Valuetype" /p:Configuration=Debug /maxcpucount
+build "${MSBUILD_PATH//\\/\/}/MSBuild.exe" TAO_ACE.sln "/t:PortableServer;CosNaming;Messaging;BiDir_GIOP;CodecFactory;AnyTypeCode;Valuetype;Naming_Service" /p:Configuration=Release /maxcpucount
