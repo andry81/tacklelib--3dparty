@@ -22,7 +22,6 @@ if "%ADDRESS_MODEL%" == "64" (
   set "BOOST_BUILD_CMD_LINE=%BOOST_BUILD_CMD_LINE% --stagedir=stage-x64"
 )
 
-
 rem extract include library names from first parameter
 set HAS_WITH_PYTHON=0
 
@@ -32,7 +31,7 @@ set INDEX=1
 
 :GEN_WITH_LIBS_LOOP
 set "LIB_NAME="
-for /F "eol=	 tokens=%INDEX% delims=," %%i in ("%~1") do set "LIB_NAME=%%i"
+for /F "eol=	 tokens=%INDEX% delims=, " %%i in ("%~1") do set "LIB_NAME=%%i"
 if not defined LIB_NAME goto GEN_WITH_LIBS_LOOP_END
 
 set BOOST_LIB_CONFIG_ARGS=%BOOST_LIB_CONFIG_ARGS% --with-%LIB_NAME%
@@ -53,7 +52,7 @@ set INDEX=1
 
 :GEN_WITHOUT_LIBS_LOOP
 set "LIB_NAME="
-for /F "eol=	 tokens=%INDEX% delims=," %%i in ("%~2") do set "LIB_NAME=%%i"
+for /F "eol=	 tokens=%INDEX% delims=, " %%i in ("%~2") do set "LIB_NAME=%%i"
 if not defined LIB_NAME goto GEN_WITHOUT_LIBS_LOOP_END
 
 set BOOST_LIB_CONFIG_ARGS=%BOOST_LIB_CONFIG_ARGS% --without-%LIB_NAME%
