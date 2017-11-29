@@ -738,8 +738,8 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\main\resources\log4cxx.rc">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">\pwdev\vc12_x86\log4cxx\log4cxx-0.10.0\src\main\resources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">\pwdev\vc12_x86\log4cxx\log4cxx-0.10.0\src\main\resources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">\3dparty\vc12_x86\log4cxx\log4cxx-0.10.0\src\main\resources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">\3dparty\vc12_x86\log4cxx\log4cxx-0.10.0\src\main\resources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
