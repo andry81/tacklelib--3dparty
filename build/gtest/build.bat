@@ -11,11 +11,14 @@ call "%%~dp0..\reg_env.bat"
 set BUILD_DIR=build
 if "%ADDRESS_MODEL%" == "64" set "BUILD_DIR=%BUILD_DIR%_x64"
 
+set LASTERROR=0
+
 md "%PROJECT_ROOT%\%BUILD_DIR%"
 pushd "%PROJECT_ROOT%\%BUILD_DIR%" && (
-  call :CMD cmake.exe -G "%%CMAKE_GENERATOR_TOOLSET%%" -Dgtest_force_shared_crt=ON .. || exit /b 2
-  call :CMD cmake --build . --config Debug || exit /b 3
-  call :CMD cmake --build . --config Release || exit /b 4
+  rem call :CMD cmake.exe -G "%%CMAKE_GENERATOR_TOOLSET%%" -Dgtest_force_shared_crt=ON .. || ( set LASTERROR=2 & goto EXIT )
+  call :CMD cmake.exe -G "%%CMAKE_GENERATOR_TOOLSET%%" .. || ( set LASTERROR=2 & goto EXIT )
+  call :CMD cmake --build . --config Debug || ( set LASTERROR=3 & goto EXIT )
+  call :CMD cmake --build . --config Release || ( set LASTERROR=4 & goto EXIT )
   cd ..
   echo.F|xcopy "%PROJECT_ROOT%\%BUILD_DIR%\Debug\gtestd.lib" "%PROJECT_ROOT%\msvc\gtest-md\Debug\" /E /I /Y
   echo.F|xcopy "%PROJECT_ROOT%\%BUILD_DIR%\Debug\gtest_maind.lib" "%PROJECT_ROOT%\msvc\gtest-md\Debug\" /E /I /Y
@@ -25,9 +28,10 @@ pushd "%PROJECT_ROOT%\%BUILD_DIR%" && (
   popd
 )
 
+:EXIT
 pause
 
-exit /b 0
+exit /b %LASTERROR%
 
 :CMD
 echo.^>%*
