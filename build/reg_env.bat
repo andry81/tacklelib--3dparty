@@ -2,10 +2,24 @@
 
 set "_3DPARTY_BASE_PATH=%~dp0.."
 
+if "%PATH:~-1%" == ";" set "PATH=%PATH:~0,-1%"
+
 if "%TOOLSET%" == "msvc-14.1" (
   set DEV_COMPILER=vc2017
+  rem update path variable
+  setlocal ENABLEDELAYEDEXPANSION
+  for /F "eol=| tokens=* delims=" %%i in ("!PATH!") do (
+    endlocal
+    set "PATH=%%i;%WINDOWS_SDK_ROOT%\bin"
+  )
 ) else if "%TOOLSET%" == "msvc-14.0" (
   set DEV_COMPILER=vc14
+  rem update path variable
+  setlocal ENABLEDELAYEDEXPANSION
+  for /F "eol=| tokens=* delims=" %%i in ("!PATH!") do (
+    endlocal
+    set "PATH=%%i;%WINDOWS_SDK_ROOT%\bin"
+  )
 ) else if "%TOOLSET%" == "msvc-12.0" (
   set DEV_COMPILER=vc12
 ) else if "%TOOLSET%" == "msvc-10.0" (

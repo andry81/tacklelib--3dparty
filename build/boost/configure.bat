@@ -3,6 +3,7 @@
 (
   echo.@echo off
   echo.
+  echo.set WINDOWS_SDK_ROOT=c:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A
   echo.set SRC_BASE_DIR=boost
   echo.set SRC_DIR=%%SRC_BASE_DIR%%_1_63_0
   echo.set TOOLSET=msvc-14.0
