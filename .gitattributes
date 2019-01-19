@@ -211,6 +211,7 @@ build/tao/cleanup_temp.bat -text
 build/tao/configure.bat -text
 build/wtee.exe -text
 common/Environment.cmake -text
+mingw_gcc_x86/Environment.cmake -text
 vc14_x64/Environment.cmake -text
 vc14_x64/googletest/googletest-release-1.8.0/README.md -text
 vc14_x86/Environment.cmake -text
