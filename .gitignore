@@ -66,7 +66,6 @@ common/tbb/*
 common/tbb/tbb2017_20161128oss/*
 vc14_x64/*
 vc14_x64/boost/*
-vc14_x64/boost/boost_1_62_0/*
 vc14_x64/gmock/*
 vc14_x64/gmock/gmock-1.7.0/*
 vc14_x64/googletest/*
@@ -84,13 +83,10 @@ vc14_x64/log4cxx/log4cxx-0.10.0/*
 vc14_x64/omniORB/*
 vc14_x64/omniORB/omniORB_branch_4_2_6333/*
 vc14_x64/qwt/*
-vc14_x64/qwt/qwt-6.1_2522_qt-5.7/*
 vc14_x64/tao/*
 vc14_x64/tao/6.3.3/*
 vc14_x86/*
 vc14_x86/boost/*
-vc14_x86/boost/boost_1_62_0/*
-vc14_x86/boost/boost_1_63_0/*
 vc14_x86/googletest/*
 vc14_x86/googletest/googletest-release-1.8.0/*
 vc14_x86/googletest/googletest-release-1.8.0/googlemock/*

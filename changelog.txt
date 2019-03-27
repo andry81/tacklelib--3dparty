@@ -1,3 +1,6 @@
+2019.03.27:
+* minor cleanup
+
 2019.03.10:
 * new: separate changelog file for changes in the project
 * new: separate root configuration file for the new cmake loader through the `FindGlobal3dpartyEnvironments.cmake` and `SetVarsFromFiles.cmake` modules
