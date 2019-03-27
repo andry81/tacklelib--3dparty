@@ -2,40 +2,29 @@
 
 set "_3DPARTY_BASE_PATH=%~dp0.."
 
-if "%PATH:~-1%" == ";" set "PATH=%PATH:~0,-1%"
+rem if "%PATH:~-1%" == ";" set "PATH=%PATH:~0,-1%"
 
-if "%TOOLSET%" == "mingw_gcc" (
-  set TOOLSET=gcc
-  set DEV_COMPILER=mingw_gcc
-  rem update path variable
-  setlocal ENABLEDELAYEDEXPANSION
-  for /F "eol=| tokens=* delims=" %%i in ("!PATH!") do (
-    endlocal
-    set "PATH=%%i;%MINGW_ROOT%\bin"
+set DEV_COMPILER=unknown
+if not "%TOOLSET%" == "%TOOLSET:mingw_=%" (
+  if not "%TOOLSET%" == "%TOOLSET:_gcc=%" (
+    set DEV_COMPILER=mingw_gcc
+  )
+) else if not "%TOOLSET%" == "%TOOLSET:cygwin_=%" (
+  if not "%TOOLSET%" == "%TOOLSET:_gcc=%" (
+    set DEV_COMPILER=cygwin_gcc
   )
 ) else if "%TOOLSET%" == "msvc-14.1" (
   set DEV_COMPILER=vc2017
-  rem update path variable
-  setlocal ENABLEDELAYEDEXPANSION
-  for /F "eol=| tokens=* delims=" %%i in ("!PATH!") do (
-    endlocal
-    set "PATH=%%i;%WINDOWS_SDK_ROOT%\bin"
-  )
 ) else if "%TOOLSET%" == "msvc-14.0" (
   set DEV_COMPILER=vc14
-  rem update path variable
-  setlocal ENABLEDELAYEDEXPANSION
-  for /F "eol=| tokens=* delims=" %%i in ("!PATH!") do (
-    endlocal
-    set "PATH=%%i;%WINDOWS_SDK_ROOT%\bin"
-  )
 ) else if "%TOOLSET%" == "msvc-12.0" (
   set DEV_COMPILER=vc12
 ) else if "%TOOLSET%" == "msvc-10.0" (
   set DEV_COMPILER=vc10
 ) else (
-  set DEV_COMPILER=unknown
-)
+  echo.%~nx0: error: not implemented toolset: TOOLSET="%TOOLSET%".
+  exit /b 127
+) >&2
 
 if %ADDRESS_MODEL% == 32 (
   set DEV_COMPILER_DIR=%DEV_COMPILER%_x86
@@ -58,6 +47,72 @@ if "%ADDRESS_MODEL%" == "64" (
   rem for devenv call
   set DEVENV_SOLUTION_PLATFORM=Win32
 )
+
+rem collect mingw/cygwin paths from PATH variable
+set INDEX=1
+set "PREFIX_PATHS="
+:PATH_LOOP
+set "PATH_VALUE="
+for /f "eol=| tokens=%INDEX% delims=;" %%i in ("%PATH%") do set "PATH_VALUE=%%i"
+set /A INDEX+=1
+if not defined PATH_VALUE goto PATH_LOOP_END
+
+if "%PATH_VALUE%" == "%PATH_VALUE:\mingw=%" ^
+if "%PATH_VALUE%" == "%PATH_VALUE:\cygwin=%" ^
+if "%PATH_VALUE%" == "%PATH_VALUE:/mingw=%" ^
+if "%PATH_VALUE%" == "%PATH_VALUE:/cygwin=%" goto PATH_LOOP
+
+if defined PREFIX_PATHS (
+  set "PREFIX_PATHS=%PREFIX_PATHS%;%PATH_VALUE%"
+) else (
+  set "PREFIX_PATHS=%PATH_VALUE%"
+)
+
+goto PATH_LOOP
+
+:PATH_LOOP_END
+
+rem reset PATH variable to defaults
+
+if defined PREFIX_PATHS (
+  set "PATH=%PREFIX_PATHS%;%SYSTEMROOT%\system32;%SYSTEMROOT%;%SYSTEMROOT%\system32\Wbem"
+) else (
+  set "PATH=%SYSTEMROOT%\system32;%SYSTEMROOT%;%SYSTEMROOT%\system32\Wbem"
+)
+
+if "%TOOLSET%" == "%TOOLSET:msvc-=%" ^
+if "%TOOLSET%" == "%TOOLSET:cygwin_=%" goto IGNORE_PATH_UPDATE
+
+if defined MINGW_ROOT (
+  rem update path variable
+  setlocal ENABLEDELAYEDEXPANSION
+  for /F "eol=| tokens=* delims=" %%i in ("!PATH!") do (
+    endlocal
+    set "PATH=%%i;%MINGW_ROOT%\bin"
+  )
+)
+
+if defined WINDOWS_SDK_ROOT (
+  rem update path variable
+  setlocal ENABLEDELAYEDEXPANSION
+  for /F "eol=| tokens=* delims=" %%i in ("!PATH!") do (
+    endlocal
+    set "PATH=%%i;%WINDOWS_SDK_ROOT%\bin"
+  )
+)
+
+if defined WINDOWS_KIT_BIN_ROOT (
+  rem update path variable
+  setlocal ENABLEDELAYEDEXPANSION
+  for /F "eol=| tokens=* delims=" %%i in ("!PATH!") do (
+    endlocal
+    set "PATH=%%i;%WINDOWS_KIT_BIN_ROOT%\%MSVC_ARCHITECTURE%"
+  )
+)
+
+:IGNORE_PATH_UPDATE
+
+set "PATH=%PATH:\=/%"
 
 rem Qt beginning from version 5.9.0 has changed the generator toolset naming, so we have to test the QT version to select platform correctly
 for /F "usebackq tokens=* delims=" %%i in (`where qmake.exe 2^> nul`) do (
@@ -103,7 +158,16 @@ if not defined QT_VERSION_MINOR goto IGNORE_QMAKE_GENERATOR_VERSION_SELECT
 if %QT_VERSION_MAJOR% GTR 5 goto IGNORE_QMAKE_GENERATOR_VERSION_SELECT
 if %QT_VERSION_MAJOR% GEQ 5 if %QT_VERSION_MINOR% GEQ 9 goto IGNORE_QMAKE_GENERATOR_VERSION_SELECT
 
-if "%TOOLSET%" == "msvc-14.1" (
+set "QMAKE_GENERATOR_TOOLSET=unknown"
+if not "%TOOLSET%" == "%TOOLSET:mingw_=%" (
+  if not "%TOOLSET%" == "%TOOLSET:_gcc=%" (
+    set "QMAKE_GENERATOR_TOOLSET=g++"
+  )
+) else if not "%TOOLSET%" == "%TOOLSET:cygwin_=%" (
+  if not "%TOOLSET%" == "%TOOLSET:_gcc=%" (
+    set "QMAKE_GENERATOR_TOOLSET=g++"
+  )
+) else if "%TOOLSET%" == "msvc-14.1" (
   set "QMAKE_GENERATOR_TOOLSET=msvc2017"
 ) else if "%TOOLSET%" == "msvc-14.0" (
   set "QMAKE_GENERATOR_TOOLSET=msvc2015"
@@ -111,24 +175,23 @@ if "%TOOLSET%" == "msvc-14.1" (
   set "QMAKE_GENERATOR_TOOLSET=msvc2012"
 ) else if "%TOOLSET%" == "msvc-10.0" (
   set "QMAKE_GENERATOR_TOOLSET=msvc2010"
-) else (
-  set "QMAKE_GENERATOR_TOOLSET=unknown"
 )
 
 goto QMAKE_GENERATOR_VERSION_SELECT_END
 
 :IGNORE_QMAKE_GENERATOR_VERSION_SELECT
 
-if "%TOOLSET%" == "msvc-14.1" (
+set "QMAKE_GENERATOR_TOOLSET=unknown"
+if not "%TOOLSET%" == "%TOOLSET:mingw_=%" (
+  if not "%TOOLSET%" == "%TOOLSET:_gcc=%" (
+    set "QMAKE_GENERATOR_TOOLSET=g++"
+  )
+) else if not "%TOOLSET%" == "%TOOLSET:cygwin_=%" (
+  if not "%TOOLSET%" == "%TOOLSET:_gcc=%" (
+    set "QMAKE_GENERATOR_TOOLSET=g++"
+  )
+) else if not "%TOOLSET%" == "%TOOLSET:msvc-=%" (
   set "QMAKE_GENERATOR_TOOLSET=msvc"
-) else if "%TOOLSET%" == "msvc-14.0" (
-  set "QMAKE_GENERATOR_TOOLSET=msvc"
-) else if "%TOOLSET%" == "msvc-12.0" (
-  set "QMAKE_GENERATOR_TOOLSET=msvc"
-) else if "%TOOLSET%" == "msvc-10.0" (
-  set "QMAKE_GENERATOR_TOOLSET=msvc"
-) else (
-  set "QMAKE_GENERATOR_TOOLSET=unknown"
 )
 
 :QMAKE_GENERATOR_VERSION_SELECT_END
@@ -149,9 +212,17 @@ if not "%CMAKE_GENERATOR_TOOLSET%" == "unknown" (
   if "%ADDRESS_MODEL%" == "64" set "CMAKE_GENERATOR_TOOLSET=%CMAKE_GENERATOR_TOOLSET% Win64"
 )
 
-if not "%QMAKE_GENERATOR_TOOLSET%" == "unknown" (
+if not "%TOOLSET%" == "%TOOLSET:mingw_=%" (
+  if "%ADDRESS_MODEL%" == "64" set "QMAKE_GENERATOR_TOOLSET=win64-g++"
+  if "%ADDRESS_MODEL%" == "32" set "QMAKE_GENERATOR_TOOLSET=win32-g++"
+) else if not "%TOOLSET%" == "%TOOLSET:cygwin_=%" (
+  if "%ADDRESS_MODEL%" == "64" set "QMAKE_GENERATOR_TOOLSET=win64-g++"
+  if "%ADDRESS_MODEL%" == "32" set "QMAKE_GENERATOR_TOOLSET=win32-g++"
+) else if not "%TOOLSET%" == "%TOOLSET:msvc-=%" (
   if "%ADDRESS_MODEL%" == "64" set "QMAKE_GENERATOR_TOOLSET=win64-%QMAKE_GENERATOR_TOOLSET%"
   if "%ADDRESS_MODEL%" == "32" set "QMAKE_GENERATOR_TOOLSET=win32-%QMAKE_GENERATOR_TOOLSET%"
 )
 
-echo.PROJECT_ROOT="%PROJECT_ROOT%"
+echo.PROJECT_ROOT: "%PROJECT_ROOT%"
+
+exit /b 0

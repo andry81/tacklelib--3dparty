@@ -1,4 +1,7 @@
 2019.03.27:
+* changed: qwt: mingw/cygwin build support
+
+2019.03.27:
 * minor cleanup
 
 2019.03.10:

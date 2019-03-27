@@ -166,6 +166,7 @@
 %QWT_BUILD_DIR%\lib\qwt.dll
 %QWT_BUILD_DIR%\lib\qwt.exp
 %QWT_BUILD_DIR%\lib\qwt.lib
+%QWT_BUILD_DIR%\lib\qwt.pdb
 %QWT_BUILD_DIR%\lib\qwtd.dll
 %QWT_BUILD_DIR%\lib\qwtd.exp
 %QWT_BUILD_DIR%\lib\qwtd.ilk
