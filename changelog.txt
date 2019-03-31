@@ -1,3 +1,6 @@
+2019.03.31:
+* changed: boost: 1.69.0
+
 2019.03.27:
 * changed: qwt: mingw/cygwin build support
 
