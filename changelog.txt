@@ -1,4 +1,7 @@
 2019.03.31:
+* changed: minor changes to help prevent incomplete build
+
+2019.03.31:
 * changed: boost: 1.69.0
 
 2019.03.27:

@@ -4,9 +4,15 @@ setlocal
 
 if not exist "%~dp0configure.user.bat" ( call "%%~dp0configure.bat" || exit /b 255 )
 
-call "%%~dp0configure.user.bat"
+call "%%~dp0configure.user.bat" || exit /b
 
-call "%%~dp0..\reg_env.bat"
+call "%%~dp0..\reg_env.bat" || exit /b
+
+echo.PATH: "%PATH:;="&echo.PATH: "%"
+
+if not "%TOOLSET%" == "%TOOLSET:msvc-=%" (
+  call :CMD where mt || exit /b
+)
 
 rem parameters order are important here, it will produce corresponding nested directories!
 set "BOOST_BUILD_CMD_LINE="

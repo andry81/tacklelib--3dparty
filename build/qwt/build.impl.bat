@@ -30,8 +30,8 @@ if "%TOOLSET%" == "msvc-14.0" (
 )
 
 if not "%TOOLSET%" == "%TOOLSET:msvc-=%" (
-  call :CMD where cl
-  call :CMD where rc
+  call :CMD where cl || exit /b
+  call :CMD where rc || exit /b
 )
 
 pushd "%PROJECT_ROOT%" && (

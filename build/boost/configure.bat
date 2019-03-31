@@ -6,8 +6,9 @@
   echo.set "MINGW_ROOT=c:\Qt\Qt5_11_1\Tools\mingw530_32"
   echo.set "WINDOWS_SDK_ROOT=c:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A"
   echo.set SRC_BASE_DIR=boost
-  echo.set SRC_DIR=%%SRC_BASE_DIR%%_1_63_0
+  echo.set SRC_DIR=%%SRC_BASE_DIR%%_1_69_0
   echo.set TOOLSET=msvc-14.0
+  echo.rem set TOOLSET=mingw_gcc
   echo.set VARIANT=release,debug
   echo.set ARCHITECTURE=x86
   echo.set ADDRESS_MODEL=32
