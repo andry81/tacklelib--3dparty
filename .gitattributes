@@ -217,8 +217,3 @@ build/wtee.exe -text
 /changelog.txt -text
 common/Environment.cmake -text
 /environment.vars -text
-mingw_gcc_x86/Environment.cmake -text
-vc14_x64/Environment.cmake -text
-vc14_x64/googletest/googletest-release-1.8.0/README.md -text
-vc14_x86/Environment.cmake -text
-vc14_x86/googletest/googletest-release-1.8.0/README.md -text
