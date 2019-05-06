@@ -72,8 +72,6 @@ vc14_x64/googletest/*
 vc14_x64/googletest/googletest-release-1.8.0/*
 vc14_x64/googletest/googletest-release-1.8.0/googlemock/*
 vc14_x64/googletest/googletest-release-1.8.0/googletest/*
-vc14_x64/gtest/*
-vc14_x64/gtest/gtest-1.7.0/*
 vc14_x64/log4cplus/*
 vc14_x64/log4cplus/log4cplus-1.2.0/*
 vc14_x64/log4cxx/*
