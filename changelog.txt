@@ -1,3 +1,6 @@
+2019.07.31:
+* changed: update to the latest tacklelib changes
+
 2019.07.23:
 * minor change
 
