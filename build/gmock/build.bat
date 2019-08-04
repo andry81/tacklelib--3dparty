@@ -11,8 +11,8 @@ call "%%~dp0..\reg_env.bat"
 set BUILD_DIR=build
 if "%ADDRESS_MODEL%" == "64" set "BUILD_DIR=%BUILD_DIR%_x64"
 
-md "%PROJECT_ROOT%\%BUILD_DIR%"
-pushd "%PROJECT_ROOT%\%BUILD_DIR%" && (
+call :CMD md "%%PROJECT_ROOT%%\%%BUILD_DIR%%"
+call :CMD pushd "%%PROJECT_ROOT%%\%%BUILD_DIR%%" && (
   call :CMD cmake.exe -G "%%CMAKE_GENERATOR_TOOLSET%%" -Dgtest_force_shared_crt=ON .. || exit /b 2
   call :CMD cmake --build . --config Debug || exit /b 3
   call :CMD cmake --build . --config Release || exit /b 4

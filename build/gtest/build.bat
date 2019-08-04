@@ -13,8 +13,8 @@ if "%ADDRESS_MODEL%" == "64" set "BUILD_DIR=%BUILD_DIR%_x64"
 
 set LASTERROR=0
 
-md "%PROJECT_ROOT%\%BUILD_DIR%"
-pushd "%PROJECT_ROOT%\%BUILD_DIR%" && (
+call :CMD md "%%PROJECT_ROOT%%\%%BUILD_DIR%%"
+call :CMD pushd "%%PROJECT_ROOT%%\%%BUILD_DIR%%" && (
   rem call :CMD cmake.exe -G "%%CMAKE_GENERATOR_TOOLSET%%" -Dgtest_force_shared_crt=ON .. || ( set LASTERROR=2 & goto EXIT )
   call :CMD cmake.exe -G "%%CMAKE_GENERATOR_TOOLSET%%" .. || ( set LASTERROR=2 & goto EXIT )
   call :CMD cmake --build . --config Debug || ( set LASTERROR=3 & goto EXIT )

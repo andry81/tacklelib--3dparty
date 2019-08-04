@@ -49,14 +49,14 @@ if "%TOOLSET%" == "msvc-14.0" (
 )
 
 rem save going to change the current directory into a variable
-set "PWD=%BUILD_BASE_PATH%\%SRC_DIR%\src"
+set "CWD=%BUILD_BASE_PATH%\%SRC_DIR%\src"
 
 (
   rem drop all local variables..
   endlocal
 
   rem ..except this
-  set "PWD=%PWD%"
+  set "CWD=%CWD%"
   set "PATH=%PATH%"
   set "OMNIORB_PLATFORM=%OMNIORB_PLATFORM%"
   if "%ADDRESS_MODEL%" == "64" (
@@ -94,10 +94,10 @@ rem replace all backslashes to forward
 set "EXEC_CMD=%~1"
 set EXEC_CMD=bash -c "%EXEC_CMD:\=/%"
 
-pushd "%PWD%" && (
+call :CMD pushd "%%CWD%%" && (
   rem make a call with drop of some variables
   set "EXEC_CMD="
-  set "PWD="
+  set "CWD="
 
   echo.^>%EXEC_CMD%
   %EXEC_CMD%

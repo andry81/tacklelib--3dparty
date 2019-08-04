@@ -1,3 +1,7 @@
+2019.08.04:
+* fixed: boost build under mingw
+* changed: minor changes
+
 2019.07.31:
 * changed: update to the latest tacklelib changes
 

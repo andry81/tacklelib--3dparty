@@ -16,7 +16,7 @@ if "%TOOLSET%" == "msvc-14.0" (
   call "%%VS100COMNTOOLS%%\..\..\VC\vcvarsall.bat" %%MSVC_ARCHITECTURE%%
 )
 
-pushd "%PROJECT_ROOT%\projects" && (
+call :CMD pushd "%%PROJECT_ROOT%%\projects" && (
   call :BUILD
   popd
 )

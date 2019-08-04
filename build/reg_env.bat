@@ -5,13 +5,17 @@ set "_3DPARTY_BASE_PATH=%~dp0.."
 rem if "%PATH:~-1%" == ";" set "PATH=%PATH:~0,-1%"
 
 set DEV_COMPILER=unknown
+set JAM_TOOLSET=%TOOLSET%
+
 if not "%TOOLSET%" == "%TOOLSET:mingw_=%" (
   if not "%TOOLSET%" == "%TOOLSET:_gcc=%" (
     set DEV_COMPILER=mingw_gcc
+    set JAM_TOOLSET=gcc-mingw
   )
 ) else if not "%TOOLSET%" == "%TOOLSET:cygwin_=%" (
   if not "%TOOLSET%" == "%TOOLSET:_gcc=%" (
     set DEV_COMPILER=cygwin_gcc
+    set JAM_TOOLSET=gcc-cygwin
   )
 ) else if "%TOOLSET%" == "msvc-14.1" (
   set DEV_COMPILER=vc2017
@@ -80,8 +84,7 @@ if defined PREFIX_PATHS (
   set "PATH=%SYSTEMROOT%\system32;%SYSTEMROOT%;%SYSTEMROOT%\system32\Wbem"
 )
 
-if "%TOOLSET%" == "%TOOLSET:msvc-=%" ^
-if "%TOOLSET%" == "%TOOLSET:cygwin_=%" goto IGNORE_PATH_UPDATE
+if "%TOOLSET%" == "%TOOLSET:mingw_=%" goto IGNORE_MINGW_PATH_UPDATE
 
 if defined MINGW_ROOT (
   rem update path variable
@@ -91,6 +94,12 @@ if defined MINGW_ROOT (
     set "PATH=%%i;%MINGW_ROOT%\bin"
   )
 )
+
+:IGNORE_MINGW_PATH_UPDATE
+
+if "%TOOLSET%" == "%TOOLSET:msvc-=%" ^
+if "%TOOLSET%" == "%TOOLSET:mingw_=%" ^
+if "%TOOLSET%" == "%TOOLSET:cygwin_=%" goto IGNORE_WINSDK_PATH_UPDATE
 
 if defined WINDOWS_SDK_ROOT (
   rem update path variable
@@ -110,9 +119,11 @@ if defined WINDOWS_KIT_BIN_ROOT (
   )
 )
 
-:IGNORE_PATH_UPDATE
+:IGNORE_WINSDK_PATH_UPDATE
 
 set "PATH=%PATH:\=/%"
+
+rem ### QT/QMAKE ###
 
 rem Qt beginning from version 5.9.0 has changed the generator toolset naming, so we have to test the QT version to select platform correctly
 for /F "usebackq tokens=* delims=" %%i in (`where qmake.exe 2^> nul`) do (

@@ -23,14 +23,14 @@ cd .
 set "PATH=%PATH%;%CYGWIN_PATH%\bin"
 
 rem save going to change the current directory into a variable
-set "PWD=%BUILD_BASE_PATH%\%BUILD_DIR%"
+set "CWD=%BUILD_BASE_PATH%\%BUILD_DIR%"
 
 (
   rem drop all local variables..
   endlocal
 
   rem ..except this
-  set "PWD=%PWD%"
+  set "CWD=%CWD%"
   set "PATH=%PATH%"
   set "ACE_ROOT=%ACE_ROOT%"
   set "MSBUILD_PATH=%MSBUILD_PATH%"
@@ -59,8 +59,7 @@ pause
 goto :EOF
 
 :EXEC
-echo %PWD%
-pushd "%PWD%" && (
+call :CMD pushd "%%CWD%%" && (
   call :CMD "%%MSBUILD_PATH%%/MSBuild.exe" TAO_ACE_vc12.sln /toolsversion:12.0 "/t:PortableServer;CosNaming;Messaging;BiDir_GIOP;CodecFactory;AnyTypeCode;Valuetype;Naming_Service" /p:Configuration=Release /maxcpucount
   popd
 )
@@ -71,10 +70,10 @@ rem rem replace all backslashes to forward
 rem set "EXEC_CMD=%~1"
 rem set EXEC_CMD=bash -c "%EXEC_CMD:\=/%"
 rem 
-rem pushd "%PWD%" && (
+rem call :CMD pushd "%%CWD%%" && (
 rem   rem make a call with drop of some variables
 rem   set "EXEC_CMD="
-rem   set "PWD="
+rem   set "CWD="
 rem 
 rem   echo.^>%EXEC_CMD%
 rem   %EXEC_CMD%

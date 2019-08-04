@@ -17,7 +17,7 @@ if not "%TOOLSET%" == "%TOOLSET:msvc-=%" (
 rem parameters order are important here, it will produce corresponding nested directories!
 set "BOOST_BUILD_CMD_LINE="
 if not "%VARIANT%" == "" set "BOOST_BUILD_CMD_LINE=%BOOST_BUILD_CMD_LINE% variant=%VARIANT%"
-if not "%TOOLSET%" == "" set "BOOST_BUILD_CMD_LINE=%BOOST_BUILD_CMD_LINE% toolset=%TOOLSET%"
+if not "%JAM_TOOLSET%" == "" set "BOOST_BUILD_CMD_LINE=%BOOST_BUILD_CMD_LINE% toolset=%JAM_TOOLSET%"
 if not "%ARCHITECTURE%" == "" set "BOOST_BUILD_CMD_LINE=%BOOST_BUILD_CMD_LINE% architecture=%ARCHITECTURE%"
 if not "%ADDRESS_MODEL%" == "" set "BOOST_BUILD_CMD_LINE=%BOOST_BUILD_CMD_LINE% address-model=%ADDRESS_MODEL%"
 if not "%LINK_TYPE%" == "" set "BOOST_BUILD_CMD_LINE=%BOOST_BUILD_CMD_LINE% link=%LINK_TYPE%"
@@ -77,7 +77,7 @@ rem if %HAS_WITH_PYTHON% EQU 0 (
 rem   set BOOST_LIB_CONFIG_ARGS=%BOOST_LIB_CONFIG_ARGS% --without-python
 rem )
 
-pushd "%BUILD_BASE_PATH%\%SRC_DIR%" && (
+call :CMD pushd "%%BUILD_BASE_PATH%%\%%SRC_DIR%%" && (
   call :CMD bjam %%BOOST_BUILD_CMD_LINE%% %%BOOST_LIB_CONFIG_ARGS%% stage %%3 %%4 %%5 %%6 %%7 %%8 %%9
   popd
 )
