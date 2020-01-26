@@ -1,3 +1,8 @@
+2020.01.26:
+* fixed: boost 1.72.0 build versus msvc 2017
+* changed: moved boost build out of source
+* refactor: directories structure move and rename
+
 2019.08.04:
 * fixed: boost build under mingw
 * changed: minor changes

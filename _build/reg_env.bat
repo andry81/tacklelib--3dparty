@@ -17,6 +17,8 @@ if not "%TOOLSET%" == "%TOOLSET:mingw_=%" (
     set DEV_COMPILER=cygwin_gcc
     set JAM_TOOLSET=gcc-cygwin
   )
+) else if "%TOOLSET%" == "msvc-14.2" (
+  set DEV_COMPILER=vc2019
 ) else if "%TOOLSET%" == "msvc-14.1" (
   set DEV_COMPILER=vc2017
 ) else if "%TOOLSET%" == "msvc-14.0" (
@@ -36,9 +38,14 @@ if %ADDRESS_MODEL% == 32 (
   set DEV_COMPILER_DIR=%DEV_COMPILER%_x%ADDRESS_MODEL%
 )
 
+set "SRC_BASE_PATH=%_3DPARTY_BASE_PATH%\_src\%SRC_BASE_DIR%"
 set "BUILD_BASE_PATH=%_3DPARTY_BASE_PATH%\%DEV_COMPILER_DIR%\%SRC_BASE_DIR%"
-set "PROJECT_ROOT=%BUILD_BASE_PATH%\%SRC_DIR%"
-set "PROJECT_ROOT=%PROJECT_ROOT:\=/%"
+
+set "BUILD_SRC=%SRC_BASE_PATH%\%SRC_DIR%"
+set "BUILD_SRC=%BUILD_SRC:\=/%"
+
+set "BUILD_ROOT=%BUILD_BASE_PATH%\%SRC_DIR%"
+set "BUILD_ROOT=%BUILD_ROOT:\=/%"
 
 if "%ADDRESS_MODEL%" == "64" (
   rem for vcvarsall.bat call
@@ -234,6 +241,6 @@ if not "%TOOLSET%" == "%TOOLSET:mingw_=%" (
   if "%ADDRESS_MODEL%" == "32" set "QMAKE_GENERATOR_TOOLSET=win32-%QMAKE_GENERATOR_TOOLSET%"
 )
 
-echo.PROJECT_ROOT: "%PROJECT_ROOT%"
+echo.BUILD_ROOT: "%BUILD_ROOT%"
 
 exit /b 0
