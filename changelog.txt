@@ -1,4 +1,7 @@
 2020.01.26:
+* changed: build output directories structure
+
+2020.01.26:
 * fixed: qwt 6.1.4 build versus msvc 2017
 * new: log redirection for the qwt build
 * changed: moved qwt build out of source
