@@ -1,4 +1,12 @@
 2020.01.26:
+* fixed: qwt 6.1.4 build versus msvc 2017
+* new: log redirection for the qwt build
+* changed: moved qwt build out of source
+* changed: removed boost/qwt cleanup scripts as not required anymore
+* changed: moved a build directory into separate directory with the `-build` suffix to be able copy/move an installed directory into directory near a build directory (names must be different)
+* refactor: build directories structure move and rename
+
+2020.01.26:
 * fixed: boost 1.72.0 build versus msvc 2017
 * changed: moved boost build out of source
 * refactor: directories structure move and rename

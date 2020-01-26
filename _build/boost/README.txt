@@ -23,20 +23,20 @@
 -------------------------------------------------------------------------------
 2. CONFIGURE
 -------------------------------------------------------------------------------
-1. run `bootstrap.bat` from the source directory
-2. run `preconfigure.bat` from the `_build` directory
-3. run `configure.bat` from the `_build` directory
-4. edit `configure.user.bat`
+1. run `bootstrap.bat` from the source directory.
+2. run `preconfigure.bat` from the `_build` directory.
+3. run `configure.bat` from the `_build` directory.
+4. edit `configure.user.bat`.
 
 -------------------------------------------------------------------------------
 3. BUILD
 -------------------------------------------------------------------------------
-run build.bat
+run `build.bat` from the `_build` directory.
 
 -------------------------------------------------------------------------------
 4. CLEANUP
 -------------------------------------------------------------------------------
-To cleanup all including stage directories:
-  cleanup_all.bat
-To cleanup only build cache w/o stage directories:
-  cleanup_temp.bat
+Just remove out of source build directory associated with particular
+architecture:
+
+  `<root>/<architecture>/%SRC_BASE_DIR%/%SRC_DIR%`

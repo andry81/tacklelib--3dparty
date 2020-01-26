@@ -3,11 +3,12 @@
 (
   echo.@echo off
   echo.
-  echo.set QT_ROOT=c:/Qt/Qt5_11_1/5.11.1/msvc2015
-  echo.rem set QT_ROOT=c:/Qt/Qt5_11_1/5.11.1/mingw53_32
+  echo.set QT_ROOT=c:/Qt/Qt5_12_6/5.12.6/msvc2017
+  echo.rem set QT_ROOT=c:/Qt/Qt5_12_6/5.12.7/mingw73_32
   echo.set SRC_BASE_DIR=qwt
-  echo.set SRC_DIR=qwt-6.1.3-src
-  echo.set TOOLSET=msvc-14.0
+  echo.set SRC_DIR=qwt-6.1.4
+  echo.set BUILD_DIR=%%SRC_DIR%%-build
+  echo.set TOOLSET=msvc-14.1
   echo.rem set TOOLSET=mingw_gcc
   echo.rem set TOOLSET=cygwin_gcc
   echo.set ADDRESS_MODEL=32

@@ -2,10 +2,7 @@
 _build/boost/README.txt -text
 _build/boost/_patches/msvc14_boost_1_57_0/boost/config/compiler/visualc.hpp -text
 _build/boost/build.bat -text
-_build/boost/cleanup_all.bat -text
-_build/boost/cleanup_all.lst -text
-_build/boost/cleanup_temp.bat -text
-_build/boost/cleanup_temp.lst -text
+_build/boost/build.impl.bat -text
 _build/boost/cmd_admin.lnk -text
 _build/boost/configure.bat -text
 _build/boost/preconfigure.bat -text
@@ -197,14 +194,6 @@ _build/qwt/_patches/QT5.6.0/mkspecs/win64-msvc2015/qmake.conf -text
 _build/qwt/_patches/QT5.6.0/mkspecs/win64-msvc2015/qplatformdefs.h -text
 _build/qwt/build.bat -text
 _build/qwt/build.impl.bat -text
-_build/qwt/cleanup_o_x64.bat -text
-_build/qwt/cleanup_o_x64.lst -text
-_build/qwt/cleanup_o_x86.bat -text
-_build/qwt/cleanup_o_x86.lst -text
-_build/qwt/cleanup_obj_x64.bat -text
-_build/qwt/cleanup_obj_x64.lst -text
-_build/qwt/cleanup_obj_x86.bat -text
-_build/qwt/cleanup_obj_x86.lst -text
 _build/qwt/configure.bat -text
 _build/reg_env.bat -text
 _build/tao/README.txt -text

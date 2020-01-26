@@ -21,7 +21,16 @@ if not "%TOOLSET%" == "%TOOLSET:msvc-=%" (
   echo.Registering %TOOLSET% %MSVC_ARCHITECTURE%...
 )
 
-if "%TOOLSET%" == "msvc-14.0" (
+rem msvc 2017 search based on: https://renenyffenegger.ch/notes/Windows/development/Visual-Studio/environment-variables/index
+rem
+
+if "%TOOLSET%" == "msvc-14.1" (
+  for /f "usebackq tokens=* delims=" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere" -latest -property installationPath`) do (
+    set "MSVC2017_INSTALL_ROOT=%%i"
+    call "%%MSVC2017_INSTALL_ROOT%%\Common7\Tools\VsDevCmd.bat"
+    call "%%VCINSTALLDIR%%\Auxiliary\Build\vcvarsall.bat" %%MSVC_ARCHITECTURE%%
+  )
+) else if "%TOOLSET%" == "msvc-14.0" (
   call "%%VS140COMNTOOLS%%\..\..\VC\vcvarsall.bat" %%MSVC_ARCHITECTURE%%
 ) else if "%TOOLSET%" == "msvc-12.0" (
   call "%%VS120COMNTOOLS%%\..\..\VC\vcvarsall.bat" %%MSVC_ARCHITECTURE%%
@@ -34,30 +43,32 @@ if not "%TOOLSET%" == "%TOOLSET:msvc-=%" (
   call :CMD where rc || exit /b
 )
 
-pushd "%PROJECT_ROOT%" && (
+if not exist "%BUILD_ROOT%\" mkdir "%BUILD_ROOT%"
+
+call :CMD pushd "%%BUILD_ROOT%%" && (
   rem generate nmake
-  call :CMD qmake -r "CONFIG += force_debug_info skip_target_version_ext" -spec %%QMAKE_GENERATOR_TOOLSET%% %%QMAKE_CMD_LINE%% "%%PROJECT_ROOT%%/qwt.pro"
-  popd
+  call :CMD qmake -r "CONFIG += force_debug_info skip_target_version_ext" -spec %%QMAKE_GENERATOR_TOOLSET%% %%QMAKE_CMD_LINE%% "%%BUILD_SRC%%/qwt.pro"
+  call :CMD popd
 )
 
 if %ERRORLEVEL% NEQ 0 goto EXIT
 
-pushd "%PROJECT_ROOT%" && (
+call :CMD pushd "%%BUILD_ROOT%%" && (
   rem run nmake
   if not "%TOOLSET%" == "%TOOLSET:msvc-=%" (
-    nmake && nmake install
+    call :CMD nmake && call :CMD nmake install
   ) else if not "%TOOLSET%" == "%TOOLSET:mingw_=%" (
-    make && make install
+    call :CMD make && call :CMD make install
   ) else if not "%TOOLSET%" == "%TOOLSET:cygwin_=%" (
-    make && make install
+    call :CMD make && call :CMD make install
   )
-  popd
+  call :CMD popd
 )
 
 :EXIT
 pause
 
-goto :EOF
+exit /b
 
 :CMD
 echo.^>%*
