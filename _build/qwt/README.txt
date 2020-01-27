@@ -14,7 +14,7 @@
     - msvc2010 for vc10_x86 + SP1Rel
     - msvc2013 for vc12_x86 + Update 5
     - msvc2015 for vc14_x86/vc14_x64 + Update 3
-    - msvc2017 for vc2017_x86
+    - msvc2017 for x86/x64
 2. Install QT before build the QWT
 3. patch QWT directory if not done yet:
     - copy all from /_patches/QT* directory into respective QT directory
@@ -41,4 +41,4 @@ Copy or use the `c:\Qwt-<version>` resulting directory.
 Just remove out of source build directory associated with particular
 architecture:
 
-  `<root>/<architecture>/%SRC_BASE_DIR%/%SRC_DIR%`
+  `<root>/<architecture>/%BUILD_DIR%`

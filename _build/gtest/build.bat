@@ -2,37 +2,15 @@
 
 setlocal
 
-if not exist "%~dp0configure.user.bat" ( call "%%~dp0configure.bat" || exit /b 255 )
+call "%%~dp0__init__.bat" || exit /b
 
-call "%%~dp0configure.user.bat"
+if exist "%~dp0build.log" (
+  rem shift logs
+  if exist "%~dp0build.old.2.log" copy /Y /B "%~dp0build.old.2.log" "%~dp0build.old.3.log"
+  if exist "%~dp0build.old.log" copy /Y /B "%~dp0build.old.log" "%~dp0build.old.2.log"
+  copy /Y /B "%~dp0build.log" "%~dp0build.old.log"
 
-call "%%~dp0..\reg_env.bat"
-
-set BUILD_DIR=build
-if "%ADDRESS_MODEL%" == "64" set "BUILD_DIR=%BUILD_DIR%_x64"
-
-set LASTERROR=0
-
-call :CMD md "%%PROJECT_ROOT%%\%%BUILD_DIR%%"
-call :CMD pushd "%%PROJECT_ROOT%%\%%BUILD_DIR%%" && (
-  rem call :CMD cmake.exe -G "%%CMAKE_GENERATOR_TOOLSET%%" -Dgtest_force_shared_crt=ON .. || ( set LASTERROR=2 & goto EXIT )
-  call :CMD cmake.exe -G "%%CMAKE_GENERATOR_TOOLSET%%" .. || ( set LASTERROR=2 & goto EXIT )
-  call :CMD cmake --build . --config Debug || ( set LASTERROR=3 & goto EXIT )
-  call :CMD cmake --build . --config Release || ( set LASTERROR=4 & goto EXIT )
-  cd ..
-  echo.F|xcopy "%PROJECT_ROOT%\%BUILD_DIR%\Debug\gtestd.lib" "%PROJECT_ROOT%\msvc\gtest-md\Debug\" /E /I /Y
-  echo.F|xcopy "%PROJECT_ROOT%\%BUILD_DIR%\Debug\gtest_maind.lib" "%PROJECT_ROOT%\msvc\gtest-md\Debug\" /E /I /Y
-  echo.F|xcopy "%PROJECT_ROOT%\%BUILD_DIR%\Release\gtest.lib" "%PROJECT_ROOT%\msvc\gtest-md\Release\" /E /I /Y
-  echo.F|xcopy "%PROJECT_ROOT%\%BUILD_DIR%\Release\gtest_main.lib" "%PROJECT_ROOT%\msvc\gtest-md\Release\" /E /I /Y
-
-  popd
+  del /F /Q /A:-D "%~dp0build.log"
 )
 
-:EXIT
-pause
-
-exit /b %LASTERROR%
-
-:CMD
-echo.^>%*
-(%*)
+"%COMSPEC%" /C call "%~dp0build.impl.bat" %* 2>&1 | "%CONTOOLS_ROOT%\wtee.exe" -a "%~dp0build.log"

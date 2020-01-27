@@ -1,3 +1,13 @@
+2020.01.27:
+* fixed: CMAKE_GENERATOR_TOOLS renamed into CMAKE_GENERATOR because in the cmake 3.15+ it has used as an environment variable and must be have as the same meaning in a shell script (https://cmake.org/cmake/help/v3.15/variable/CMAKE_GENERATOR.html#variable:CMAKE_GENERATOR )
+* new: tools extracted into separate directory
+* new: `__init__.bat` scripts for directory level initialization
+* new: googletest (gtest+gmock) 1.10.0 out of source build in the msvc 2017
+* new: log4cplus 2.0.6 out of source build in the msvc 2017
+* changed: removed cleanup scripts from rest projects
+* changed: file structure generalization, removed all obsolete directories
+* changed: log4cxx, omniorb, tao projects updated and moved into an archive directory
+
 2020.01.26:
 * changed: build output directories structure
 

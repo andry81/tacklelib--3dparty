@@ -4,34 +4,36 @@
 1. PREREQUISITES
 2. CONFIGURE
 3. BUILD
-4. CLEANUP
+4. POSTINSTALL
+5. CLEANUP
 
 -------------------------------------------------------------------------------
 1. PREREQUISITES
 -------------------------------------------------------------------------------
 1. Install Microsoft Visual Studio:
-    - msvc2010 for vc10_x86 + SP1Rel
-    - msvc2013 for vc12_x86 + Update 5
-    - msvc2015 for vc14_x64 + Update 3
-2. patch log4cplus directory if not done yet:
-    - apply patches from /_patches directory into log4cplus directory
+    - msvc2017 for x86/x64
 
 -------------------------------------------------------------------------------
 2. CONFIGURE
 -------------------------------------------------------------------------------
-1. run configure.bat
-2. edit configure.user.bat
-
-For msvc2012 ONLY:
-3. to regenerate msvc2012 directory run /scripts/msvc10_to_msvc12.cmd
+1. run `preconfigure.bat` from the `_build` directory.
+2. run `configure.bat` from the `_build` directory.
+3. edit `configure.user.bat`.
 
 -------------------------------------------------------------------------------
 3. BUILD
 -------------------------------------------------------------------------------
-run build.bat
+run `build.bat` from the `_build` directory
 
 -------------------------------------------------------------------------------
-4. CLEANUP
+4. POSTINSTALL
 -------------------------------------------------------------------------------
-To cleanup all including stage directories:
-  cleanup_*_all.bat
+N/A
+
+-------------------------------------------------------------------------------
+5. CLEANUP
+-------------------------------------------------------------------------------
+Just remove out of source build directory associated with particular
+architecture:
+
+  `<root>/<architecture>/%BUILD_DIR%`

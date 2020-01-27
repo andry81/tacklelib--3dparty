@@ -1,5 +1,5 @@
 * README.txt
-* gtest
+* log4cxx
 
 1. PREREQUISITES
 2. CONFIGURE
@@ -11,8 +11,9 @@
 1. PREREQUISITES
 -------------------------------------------------------------------------------
 1. Install Microsoft Visual Studio:
-    - msvc2015 for vc14_x64 + Update 3
     - msvc2017 for x86/x64
+2. patch log4cxx directory if not done yet:
+    - apply patches from /_patches directory into log4cxx directory
 
 -------------------------------------------------------------------------------
 2. CONFIGURE

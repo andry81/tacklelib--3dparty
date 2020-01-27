@@ -4,14 +4,7 @@ setlocal
 
 call "%%~dp0__init__.bat" || exit /b
 
-set "PATH=%PATH%;%QT_ROOT%/bin"
-
 echo.PATH: "%PATH:;="&echo.PATH: "%"
-
-if not exist "%QT_ROOT%" (
-  echo.%~nx0: error: QT_ROOT does not exist.
-  exit /b 1
-) >&2
 
 if not "%TOOLSET%" == "%TOOLSET:msvc-=%" (
   echo.Registering %TOOLSET% %MSVC_ARCHITECTURE%...
@@ -26,12 +19,10 @@ if "%TOOLSET%" == "msvc-14.1" (
     call "%%MSVC2017_INSTALL_ROOT%%\Common7\Tools\VsDevCmd.bat"
     call "%%VCINSTALLDIR%%\Auxiliary\Build\vcvarsall.bat" %%MSVC_ARCHITECTURE%%
   )
+  set "DEVENV_BUILD_DIR=msvc14"
 ) else if "%TOOLSET%" == "msvc-14.0" (
   call "%%VS140COMNTOOLS%%\..\..\VC\vcvarsall.bat" %%MSVC_ARCHITECTURE%%
-) else if "%TOOLSET%" == "msvc-12.0" (
-  call "%%VS120COMNTOOLS%%\..\..\VC\vcvarsall.bat" %%MSVC_ARCHITECTURE%%
-) else if "%TOOLSET%" == "msvc-10.0" (
-  call "%%VS100COMNTOOLS%%\..\..\VC\vcvarsall.bat" %%MSVC_ARCHITECTURE%%
+  set "DEVENV_BUILD_DIR=msvc14"
 ) else (
   echo.%~nx0: error: TOOLSET build is not supported: "%TOOLSET%"
   exit /b 127
@@ -45,24 +36,27 @@ if not "%TOOLSET%" == "%TOOLSET:msvc-=%" (
 if not exist "%BUILD_ROOT%\" mkdir "%BUILD_ROOT%"
 
 call :CMD pushd "%%BUILD_ROOT%%" && (
-  rem generate nmake
-  call :CMD qmake -r "CONFIG += force_debug_info skip_target_version_ext" -spec %%QMAKE_GENERATOR_TOOLSET%% %%QMAKE_CMD_LINE%% "%%BUILD_SRC%%/qwt.pro"
+  call :BUILD
   call :CMD popd
 )
 
-if %ERRORLEVEL% NEQ 0 goto EXIT
+goto EXIT
 
-call :CMD pushd "%%BUILD_ROOT%%" && (
-  rem run nmake
-  if not "%TOOLSET%" == "%TOOLSET:msvc-=%" (
-    call :CMD nmake && call :CMD nmake install
-  ) else if not "%TOOLSET%" == "%TOOLSET:mingw_=%" (
-    call :CMD make && call :CMD make install
-  ) else if not "%TOOLSET%" == "%TOOLSET:cygwin_=%" (
-    call :CMD make && call :CMD make install
-  )
-  call :CMD popd
-)
+:BUILD
+
+set VARIANT_VALUE_INDEX=1
+
+:BUILD_LOOP
+set "VARIANT_VALUE="
+for /F "tokens=%VARIANT_VALUE_INDEX% delims=," %%i in ("%VARIANT%") do set "VARIANT_VALUE=%%i"
+if "%VARIANT_VALUE%" == "" exit /b 0
+
+call :CMD devenv "%BUILD_SRC:/=\%\projects\log4cxx.sln" /build "%%VARIANT_VALUE%%|%%DEVENV_SOLUTION_PLATFORM%%" /project "log4cxx" || exit /b
+echo.
+
+set /A VARIANT_VALUE_INDEX+=1
+
+goto BUILD_LOOP
 
 :EXIT
 pause

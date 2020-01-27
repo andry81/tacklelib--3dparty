@@ -1,6 +1,9 @@
 @echo off
 
+if %__REG_ENV_INIT__%0 NEQ 0 exit /b
+
 set "_3DPARTY_BASE_PATH=%~dp0.."
+call :CANONICAL_PATH _3DPARTY_BASE_PATH "%%_3DPARTY_BASE_PATH%%"
 
 rem if "%PATH:~-1%" == ";" set "PATH=%PATH:~0,-1%"
 
@@ -28,7 +31,7 @@ if not "%TOOLSET%" == "%TOOLSET:mingw_=%" (
 ) else if "%TOOLSET%" == "msvc-10.0" (
   set DEV_COMPILER=vc10
 ) else (
-  echo.%~nx0: error: not implemented toolset: TOOLSET="%TOOLSET%".
+  echo.%~nx0: error: TOOLSET registration is not supported: "%TOOLSET%".
   exit /b 127
 ) >&2
 
@@ -90,6 +93,8 @@ if defined PREFIX_PATHS (
 ) else (
   set "PATH=%SYSTEMROOT%\system32;%SYSTEMROOT%;%SYSTEMROOT%\system32\Wbem"
 )
+
+if defined USER_PATH set "PATH=%PATH%;%USER_PATH%"
 
 if "%TOOLSET%" == "%TOOLSET:mingw_=%" goto IGNORE_MINGW_PATH_UPDATE
 
@@ -215,19 +220,19 @@ if not "%TOOLSET%" == "%TOOLSET:mingw_=%" (
 :QMAKE_GENERATOR_VERSION_SELECT_END
 
 if "%TOOLSET%" == "msvc-14.1" (
-  set "CMAKE_GENERATOR_TOOLSET=Visual Studio 15 2017"
+  set "CMAKE_GENERATOR=Visual Studio 15 2017"
 ) else if "%TOOLSET%" == "msvc-14.0" (
-  set "CMAKE_GENERATOR_TOOLSET=Visual Studio 14 2015"
+  set "CMAKE_GENERATOR=Visual Studio 14 2015"
 ) else if "%TOOLSET%" == "msvc-12.0" (
-  set "CMAKE_GENERATOR_TOOLSET=Visual Studio 12 2013"
+  set "CMAKE_GENERATOR=Visual Studio 12 2013"
 ) else if "%TOOLSET%" == "msvc-10.0" (
-  set "CMAKE_GENERATOR_TOOLSET=Visual Studio 10 2010"
+  set "CMAKE_GENERATOR=Visual Studio 10 2010"
 ) else (
-  set "CMAKE_GENERATOR_TOOLSET=unknown"
+  set "CMAKE_GENERATOR=unknown"
 )
 
-if not "%CMAKE_GENERATOR_TOOLSET%" == "unknown" (
-  if "%ADDRESS_MODEL%" == "64" set "CMAKE_GENERATOR_TOOLSET=%CMAKE_GENERATOR_TOOLSET% Win64"
+if not "%CMAKE_GENERATOR%" == "unknown" (
+  if "%ADDRESS_MODEL%" == "64" set "CMAKE_GENERATOR=%CMAKE_GENERATOR% Win64"
 )
 
 if not "%TOOLSET%" == "%TOOLSET:mingw_=%" (
@@ -243,4 +248,10 @@ if not "%TOOLSET%" == "%TOOLSET:mingw_=%" (
 
 echo.BUILD_ROOT: "%BUILD_ROOT%"
 
+set __REG_ENV_INIT__=1
+
+exit /b 0
+
+:CANONICAL_PATH
+set "%~1=%~f2"
 exit /b 0

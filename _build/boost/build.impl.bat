@@ -2,11 +2,7 @@
 
 setlocal
 
-if not exist "%~dp0configure.user.bat" ( call "%%~dp0configure.bat" || exit /b 255 )
-
-call "%%~dp0configure.user.bat" || exit /b
-
-call "%%~dp0..\reg_env.bat" || exit /b
+call "%%~dp0__init__.bat" || exit /b
 
 echo.PATH: "%PATH:;="&echo.PATH: "%"
 
