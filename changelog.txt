@@ -1,4 +1,7 @@
 2020.01.27:
+* changed: `environment.vars` file update
+
+2020.01.27:
 * fixed: CMAKE_GENERATOR_TOOLS renamed into CMAKE_GENERATOR because in the cmake 3.15+ it has used as an environment variable and must be have as the same meaning in a shell script (https://cmake.org/cmake/help/v3.15/variable/CMAKE_GENERATOR.html#variable:CMAKE_GENERATOR )
 * new: tools extracted into separate directory
 * new: `__init__.bat` scripts for directory level initialization
