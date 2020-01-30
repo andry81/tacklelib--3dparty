@@ -57,10 +57,6 @@ _build/gmock/README.txt -text
 _build/gmock/__init__.bat -text
 _build/gmock/build.bat -text
 _build/gmock/build.impl.bat -text
-_build/gmock/cleanup_all.bat -text
-_build/gmock/cleanup_all.lst -text
-_build/gmock/cleanup_temp.bat -text
-_build/gmock/cleanup_temp.lst -text
 _build/gmock/configure.bat -text
 _build/gmock/preconfigure.bat -text
 _build/gtest/README.txt -text
