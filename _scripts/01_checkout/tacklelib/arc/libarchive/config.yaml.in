@@ -1,0 +1,3 @@
+WCROOT_OFFSET:                          ${CONFIGURE_ROOT}/_src/arc/libarchive
+
+LIBARCHIVE.SVN_SF.REPOROOT:             svn://${SVN_SF.HUB_ROOT}/tacklelib/3dparty--libarchive

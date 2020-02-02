@@ -1,0 +1,4 @@
+WCROOT_OFFSET:                          ${CONFIGURE_ROOT}/_src/sat/orbittools
+
+ORBITTOOLS.SVN_SF.REPOROOT:             svn://${SVN_SF.HUB_ROOT}/orbittools/3dparty--orbittools
+ORBITTOOLS_P1.SVN_SF.REPOROOT:          svn://${SVN_SF.HUB_ROOT}/orbittools/3dparty--orbittools-p1

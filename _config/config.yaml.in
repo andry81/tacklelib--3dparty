@@ -1,0 +1,13 @@
+#%% version: 1
+
+SVN_SSH_ENABLED:    0
+GIT_SSH_ENABLED:    0
+
+SVN_SSH_AGENT:      'c:/Program Files/putty/plink.exe'
+GIT_SSH_AGENT:      'c:/Program Files/putty/plink.exe'
+GIT_SVN_SSH_AGENT:  'C:/Program Files/git-scm.com/Git/usr/bin/ssh-pageant.exe'
+
+LOCAL_CACHE_ROOT:   '${CONFIGURE_ROOT}/_cache'
+
+GIT_SVN_REMOTE.PRESERVE_EMPTY_DIRS:                   1
+GIT_SVN_REMOTE.PRESERVE_EMPTY_DIRS_FILE_PLACEHOLDER:  '.empty'

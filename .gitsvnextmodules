@@ -1,0 +1,8 @@
+[submodule "_common"]
+	path = _common
+	owner = /
+	url = svn://svn.code.sf.net/p/pyxvcs/pyxvcs/trunk/_pyxvcs/_common
+	branch = /
+	fetch = :refs/remotes/git-svn
+	remote = svn
+	type = dir

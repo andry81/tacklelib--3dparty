@@ -1,3 +1,9 @@
+2020.02.02:
+* new: integrated `pyxvcs` project to run standalone checkout independently to a version constrol system
+* changed: readme update
+* refactor: global directory structure refactor
+* refactor: root configure scripts rename
+
 2020.01.27:
 * changed: `environment.vars` file update
 

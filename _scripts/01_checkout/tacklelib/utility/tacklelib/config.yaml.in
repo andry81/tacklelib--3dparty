@@ -1,0 +1,3 @@
+WCROOT_OFFSET:                          ${CONFIGURE_ROOT}/_src/utility/tacklelib
+
+TACKLELIB.SVN_SF.REPOROOT:              svn://${SVN_SF.HUB_ROOT}/tacklelib/tacklelib

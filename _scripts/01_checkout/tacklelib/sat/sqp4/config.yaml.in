@@ -1,0 +1,4 @@
+WCROOT_OFFSET:                          ${CONFIGURE_ROOT}/_src/sat/sgp4
+
+SGP4.SVN_SF.REPOROOT:                   svn://${SVN_SF.HUB_ROOT}/orbittools/3dparty--sgp4
+SGP4_P1.SVN_SF.REPOROOT:                svn://${SVN_SF.HUB_ROOT}/orbittools/3dparty--sgp4-p1

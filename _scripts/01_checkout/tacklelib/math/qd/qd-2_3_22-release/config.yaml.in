@@ -1,0 +1,3 @@
+SVN_SF.WCROOT_DIR:          qd-2_3_22-release
+
+SVN_SF.CHECKOUT_URL:        ${QD.SVN_SF.REPOROOT}/branches/2_3_22_release
