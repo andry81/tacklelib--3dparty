@@ -1,4 +1,7 @@
 2020.02.03:
+* changed: `_src` svn ignores
+
+2020.02.03:
 * changed: checkout scripts extracted into `tacklelib--3dparty_checkout_scripts` project
 
 2020.02.03:
