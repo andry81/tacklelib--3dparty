@@ -6,3 +6,11 @@
 	fetch = :refs/remotes/git-svn
 	remote = svn
 	type = dir
+[submodule "_scripts/02_build"]
+	path = _scripts/02_build
+	owner = /
+	url = svn://svn.code.sf.net/p/tacklelib/3dparty_build_scripts/trunk
+	branch = /
+	fetch = :refs/remotes/git-svn
+	remote = svn
+	type = dir

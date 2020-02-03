@@ -21,24 +21,12 @@ SVN_SF.PROJECT_PATH_LIST:
   - _scripts/01_checkout/tacklelib/arc/libarchive/libarchive-3_4_1-release
   - _scripts/01_checkout/tacklelib/arc/xzutils
   - _scripts/01_checkout/tacklelib/arc/xzutils/xzutils-5_2_4-release
-  # gui
-  - _scripts/01_checkout/tacklelib/gui/qcustomplot
-  - _scripts/01_checkout/tacklelib/gui/qcustomplot/qcustomplot-2_0_1-release
-  - _scripts/01_checkout/tacklelib/gui/qwtpolar
-  - _scripts/01_checkout/tacklelib/gui/qwtpolar/qwtpolar-1_2_0-20160403
   # log
   - _scripts/01_checkout/tacklelib/log/p7client
   - _scripts/01_checkout/tacklelib/log/p7client/p7client-5_3_0-release
   # math
   - _scripts/01_checkout/tacklelib/math/qd
   - _scripts/01_checkout/tacklelib/math/qd/qd-2_3_22-release
-  # sat
-  - _scripts/01_checkout/tacklelib/sat/orbittools
-  - _scripts/01_checkout/tacklelib/sat/orbittools/orbittools-1_4_0-release
-  - _scripts/01_checkout/tacklelib/sat/orbittools/orbittools-1_4_0-release-p1
-  - _scripts/01_checkout/tacklelib/sat/sqp4
-  - _scripts/01_checkout/tacklelib/sat/sqp4/sgp4-20191207
-  - _scripts/01_checkout/tacklelib/sat/sqp4/sgp4-20191207-p1
   # test
   - _scripts/01_checkout/tacklelib/test/googletest
   - _scripts/01_checkout/tacklelib/test/googletest/googletest-1_10_0-release

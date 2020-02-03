@@ -1,3 +1,8 @@
+2020.02.03:
+* fixed: minor fixup
+* changed: gui and sat 3dparties is removed
+* changed: build scripts extracted into a separate project and referenced as an external
+
 2020.02.02:
 * new: integrated `pyxvcs` project to run standalone checkout independently to a version constrol system
 * changed: readme update
