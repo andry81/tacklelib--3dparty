@@ -1,3 +1,0 @@
-WCROOT_OFFSET:                          ${CONFIGURE_ROOT}/_src/math/qd
-
-QD.SVN_SF.REPOROOT:                     svn://${SVN_SF.HUB_ROOT}/orbittools/3dparty--qd

@@ -1,4 +1,7 @@
 2020.02.03:
+* changed: checkout scripts extracted into `tacklelib--3dparty_checkout_scripts` project
+
+2020.02.03:
 * fixed: minor fixup
 * changed: gui and sat 3dparties is removed
 * changed: build scripts extracted into a separate project and referenced as an external

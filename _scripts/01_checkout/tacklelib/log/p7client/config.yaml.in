@@ -1,3 +1,0 @@
-WCROOT_OFFSET:                          ${CONFIGURE_ROOT}/_src/log/p7client
-
-P7CLIENT.SVN_SF.REPOROOT:               svn://${SVN_SF.HUB_ROOT}/tacklelib/3dparty--p7client

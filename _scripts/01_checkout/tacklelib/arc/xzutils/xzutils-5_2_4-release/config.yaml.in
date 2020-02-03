@@ -1,3 +1,0 @@
-SVN_SF.WCROOT_DIR:          xzutils-5_2_4-release
-
-SVN_SF.CHECKOUT_URL:        ${XZUTILS.SVN_SF.REPOROOT}/branches/5_2_4_release
