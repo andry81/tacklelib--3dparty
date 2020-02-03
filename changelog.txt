@@ -1,4 +1,7 @@
 2020.02.03:
+* changed: `_scripts` svn ignores
+
+2020.02.03:
 * changed: `_src` svn ignores
 
 2020.02.03:
