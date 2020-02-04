@@ -1,4 +1,7 @@
 2020.02.04:
+* changed: `environment.vars` file update
+
+2020.02.04:
 * fixed: _scripts: checkout execution
 
 2020.02.03:
