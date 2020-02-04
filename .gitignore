@@ -6,7 +6,6 @@ _scripts/01_checkout/*.sh
 _scripts/01_checkout/*.vars
 _scripts/01_checkout/*.yaml
 _scripts/01_checkout/.log
-_src/log/log4cplus/log4cplus-2.0.5/*
-_src/test/googletest/googletest-release-1.10.0/*
-_src/utility/boost/boost_1_72_0/*
-vc2017_x86/*
+/_src
+/gcc*
+/vc*

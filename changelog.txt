@@ -1,4 +1,7 @@
 2020.02.04:
+* changed: completely removed `_src` and `vc*` directories from version control
+
+2020.02.04:
 * changed: `environment.vars` file update
 
 2020.02.04:
