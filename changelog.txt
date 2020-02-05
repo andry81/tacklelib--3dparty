@@ -1,3 +1,7 @@
+2020.02.05:
+* fixed: global 3dparty paths in the `environment.vars`
+* changed: svn ignores
+
 2020.02.04:
 * changed: completely removed `_src` and `vc*` directories from version control
 
