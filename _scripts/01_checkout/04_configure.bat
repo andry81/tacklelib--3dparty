@@ -16,7 +16,7 @@ if %VARS_CONFIG_FOUND% EQU 0 (
   exit /b 255
 ) >&2
 
-call "%%BASE_SCRIPTS_ROOT%%\%%CONFIGURE_BASE_SCRIPT_FILE_NAME%%" "%%CONFIGURE_DIR%%" --gen_scripts %%* || exit /b
+call "%%PYXVCS_SCRIPTS_ROOT%%\%%CONFIGURE_BASE_SCRIPT_FILE_NAME%%" "%%CONFIGURE_DIR%%" --gen_scripts %%* || exit /b
 exit /b 0
 
 :CHECK_VARS_CONFIG

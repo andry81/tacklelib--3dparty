@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2020.02.02
+* 2020.02.09
 * tacklelib--3dparty
 
 1. DESCRIPTION
@@ -108,7 +108,7 @@ Temporary dropped usage:
 
 4. Patches:
 
-* Python site modules contains patches in the `_common/python_patches`
+* Python site modules contains patches in the `_pyxvcs/python_patches`
   subdirectory:
 
 ** fcache

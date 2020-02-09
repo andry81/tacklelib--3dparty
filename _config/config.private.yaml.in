@@ -15,6 +15,7 @@ SVN_SF.USER:         user
 #GIT_GH.EMAIL:        user@mail.com
 
 SVN_SF.PROJECT_PATH_LIST:
+  # <root>
   - _scripts/01_checkout/tacklelib
   # arc
   - _scripts/01_checkout/tacklelib/arc/libarchive

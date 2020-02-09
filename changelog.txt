@@ -1,3 +1,8 @@
+2020.02.09:
+* changed: `_common` renamed into `_pyxvcs` to indicate a different project
+* changed: readme update
+* changed: svn ignores
+
 2020.02.05:
 * fixed: global 3dparty paths in the `environment.vars`
 * changed: svn ignores

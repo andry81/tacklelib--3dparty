@@ -1,5 +1,5 @@
-[submodule "_common"]
-	path = _common
+[submodule "_pyxvcs"]
+	path = _pyxvcs
 	owner = /
 	url = svn://svn.code.sf.net/p/pyxvcs/pyxvcs/trunk/_pyxvcs/_common
 	branch = /
