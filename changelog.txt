@@ -1,3 +1,8 @@
+2020.02.11:
+* new: configure script to make basic configuration
+* changed: readme update
+* changed: svn ingnores
+
 2020.02.10:
 * changed: readme update
 

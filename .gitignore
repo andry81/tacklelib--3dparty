@@ -1,3 +1,4 @@
+/*.vars
 _config/*.vars
 _config/*.yaml
 _scripts/01_checkout/*.bat

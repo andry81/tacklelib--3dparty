@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2020.02.10
+* 2020.02.11
 * tacklelib--3dparty
 
 1. DESCRIPTION
@@ -158,6 +158,10 @@ is used instead (variable specialization).
 -------------------------------------------------------------------------------
 6. CONFIGURE
 -------------------------------------------------------------------------------
+
+From the root directory:
+
+1. Run the `configure.*` script.
 
 From the `01_checkout` subdirectory:
 

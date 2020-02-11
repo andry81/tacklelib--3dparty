@@ -25,6 +25,7 @@ _scripts/01_checkout/04_configure.bat -text
 _scripts/01_checkout/__init__.bat -text
 _scripts/__init__.bat -text
 /changelog.txt -text
-/environment.vars -text
+/configure.bat -text
+/environment.vars.in -text
 /install_python_modules.bat -text
 /license.txt -text
