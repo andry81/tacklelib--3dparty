@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2020.02.09
+* 2020.02.10
 * tacklelib--3dparty
 
 1. DESCRIPTION
@@ -25,7 +25,7 @@
 9.2.1. `OSError: [WinError 6] The handle is invalid`
 9.3. pytest execution issues
 9.4. fcache execution issues
-10. AUTHOR EMAIL
+10. AUTHOR
 
 -------------------------------------------------------------------------------
 1. DESCRIPTION
@@ -425,6 +425,6 @@ Reinstall a different python version.
   https://github.com/tsroten/fcache/issues/28
 
 -------------------------------------------------------------------------------
-10. AUTHOR EMAIL
+10. AUTHOR
 -------------------------------------------------------------------------------
 Andrey Dibrov (andry at inbox dot ru)

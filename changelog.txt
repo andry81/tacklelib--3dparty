@@ -1,3 +1,6 @@
+2020.02.10:
+* changed: readme update
+
 2020.02.09:
 * changed: `_common` renamed into `_pyxvcs` to indicate a different project
 * changed: readme update
