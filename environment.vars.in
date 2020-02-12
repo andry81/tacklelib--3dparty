@@ -60,26 +60,47 @@
 
 # libraries with binaries built for a single platform
 
-global BOOST_ROOT:WIN:GCC::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/mingw_gcc_x86/utility/boost/boost_1_72_0-build"
-global BOOST_ROOT:WIN:MSVC14.0::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc14_x86/utility/boost/boost_1_72_0-build"
-global BOOST_ROOT:WIN:MSVC14.1*::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc2017_x86/utility/boost/boost_1_72_0-build"
+global CMAKE_LIBRARY_PATH:UNIX="/usr/lib/i386-linux-gnu"
 
-# required for boost 1.66 and higher: https://gitlab.kitware.com/cmake/cmake/merge_requests/2568
-global Boost_ARCHITECTURE::::X86="-x32"
-global Boost_ARCHITECTURE::::X64="-x64"
+# gui
 
 global QWT_ROOT:WIN:GCC::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/mingw_gcc_x86/gui/qwt/qwt-6.1.4"
 global QWT_ROOT:WIN:MSVC14.0::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc14_x86/gui/qwt/qwt-6.1.4"
 global QWT_ROOT:WIN:MSVC14.1*::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc2017_x86/gui/qwt/qwt-6.1.4"
+global QWT_ROOT:UNIX:GCC="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/gcc_x86/gui/qwt/qwt-6.1.4"
 
+# log
+
+global LOG4CPLUS_ROOT:WIN:GCC::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/mingw_gcc_x86/log/log4cplus/log4cplus-2.0.5-build"
+global LOG4CPLUS_ROOT:WIN:MSVC14.0::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc14_x86/log/log4cplus/log4cplus-2.0.5-build"
+global LOG4CPLUS_ROOT:WIN:MSVC14.1*::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc2017_x86/log/log4cplus/log4cplus-2.0.5-build"
+
+# test
+
+global GOOGLETEST_VERSION:WIN:GCC::X86="1.10.0"
 global GTEST_ROOT:WIN:GCC::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/mingw_gcc_x86/test/googletest/googletest-release-1.10.0/googletest-build"
+
+global GOOGLETEST_VERSION:WIN:MSVC14.0::X86="1.10.0"
 global GTEST_ROOT:WIN:MSVC14.0::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc14_x86/test/googletest/googletest-release-1.10.0/googletest-build"
+
+global GOOGLETEST_VERSION:WIN:MSVC14.1*::X86="1.10.0"
 global GTEST_ROOT:WIN:MSVC14.1*::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc2017_x86/test/googletest/googletest-release-1.10.0/googletest-build"
 
 global GMOCK_ROOT:WIN:GCC::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/mingw_gcc_x86/test/googletest/googletest-release-1.10.0/googlemock-build"
 global GMOCK_ROOT:WIN:MSVC14.0::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc14_x86/test/googletest/googletest-release-1.10.0/googlemock-build"
 global GMOCK_ROOT:WIN:MSVC14.1*::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc2017_x86/test/googletest/googletest-release-1.10.0/googlemock-build"
 
-global LOG4CPLUS_ROOT:WIN:GCC::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/mingw_gcc_x86/log/log4cplus/log4cplus-2.0.5-build"
-global LOG4CPLUS_ROOT:WIN:MSVC14.0::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc14_x86/log/log4cplus/log4cplus-2.0.5-build"
-global LOG4CPLUS_ROOT:WIN:MSVC14.1*::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc2017_x86/log/log4cplus/log4cplus-2.0.5-build"
+# utility
+
+global BOOST_ROOT:WIN:GCC::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/mingw_gcc_x86/utility/boost/boost_1_72_0-build"
+global BOOST_ROOT:WIN:MSVC14.0::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc14_x86/utility/boost/boost_1_72_0-build"
+global BOOST_ROOT:WIN:MSVC14.1*::X86="$/{CMAKE_CURRENT_LOAD_VARS_FILE_DIR}/vc2017_x86/utility/boost/boost_1_72_0-build"
+global BOOST_ROOT:UNIX="/home/opt/_3dparty/linux_mint_gcc_x86/boost/boost_1_72_0"
+
+global Boost_COMPILER:WIN:GCC=-mgw
+
+# required for boost 1.66 and higher: https://gitlab.kitware.com/cmake/cmake/merge_requests/2568
+global Boost_ARCHITECTURE::::X86="-x32"
+global Boost_ARCHITECTURE::::X64="-x64"
+
+global BOOST_COMPONENTS=(chrono filesystem iostreams system program_options)

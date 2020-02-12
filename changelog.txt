@@ -1,3 +1,6 @@
+2020.02.12:
+* refactor: 3dparty variables moved out from the `tacklelib` project
+
 2020.02.11:
 * new: configure script to make basic configuration
 * changed: readme update
