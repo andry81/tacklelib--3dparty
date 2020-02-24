@@ -1,5 +1,5 @@
 # must points the executable directly
-PYTHON_EXE_PATH=c:/python/x86/38/python.exe
+PYTHON_EXE_PATH="c:/python/x86/38/python.exe"
 PYTHONDONTWRITEBYTECODE=1
 
 CONFIGURE_BASE_SCRIPT_FILE_NAME=configure.py.bat
@@ -9,5 +9,5 @@ CMDOP_BASE_SCRIPT_FILE_NAME=cmdop.py.bat
 CHCP=1251
 
 # custom user executables
-# "GIT_EXEC=c:/program files/git/bin/git.exe"
-# "SVN_EXEC=c:/program files/svn/bin/svn.exe"
+# GIT_EXEC="c:/program files/git/bin/git.exe"
+# SVN_EXEC="c:/program files/svn/bin/svn.exe"

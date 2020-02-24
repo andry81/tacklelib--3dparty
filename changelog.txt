@@ -1,3 +1,6 @@
+2020.02.25:
+* changed: _config: merge with the pyxvcs project
+
 2020.02.24:
 * fixed: svn ignores
 * changed: merge from pyxvcs project
