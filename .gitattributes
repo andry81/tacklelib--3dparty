@@ -7,8 +7,6 @@ _config/config.private.yaml.in -text
 _config/config.vars.in -text
 _config/config.yaml.in -text
 _config/tmpl/__init__.bat.in -text
-_config/tmpl/configure.bat.in -text
-_config/tmpl/configure.yaml.bat.in -text
 _config/tmpl/{HUB}~git~fetch.bat.in -text
 _config/tmpl/{HUB}~git~init.bat.in -text
 _config/tmpl/{HUB}~git~makedirs.bat.in -text

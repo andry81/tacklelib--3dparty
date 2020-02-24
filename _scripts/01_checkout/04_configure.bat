@@ -4,25 +4,16 @@ setlocal
 
 call "%%~dp0__init__.bat" || exit /b
 
+set /A NEST_LVL+=1
+
 set "CONFIGURE_DIR=%~dp0"
 set "CONFIGURE_DIR=%CONFIGURE_DIR:~0,-1%"
 
-set VARS_CONFIG_FOUND=0
-for %%i in ("%CONFIGURE_ROOT%/%LOCAL_CONFIG_DIR_NAME%" "%CONFIGURE_ROOT%") do ( call :CHECK_VARS_CONFIG %%i || goto CHECK_VARS_CONFIG_END )
-:CHECK_VARS_CONFIG_END
+call "%%PYXVCS_SCRIPTS_ROOT%%\%%CONFIGURE_BASE_SCRIPT_FILE_NAME%%" "%%CONFIGURE_DIR%%" --gen_git_repos_list --gen_scripts %%*
+set LASTERROR=%ERRORLEVEL%
 
-if %VARS_CONFIG_FOUND% EQU 0 (
-  echo.%~nx0: error: `config.vars` configuration file is not found or not generated.
-  exit /b 255
-) >&2
+set /A NEST_LVL-=1
 
-call "%%PYXVCS_SCRIPTS_ROOT%%\%%CONFIGURE_BASE_SCRIPT_FILE_NAME%%" "%%CONFIGURE_DIR%%" --gen_scripts %%* || exit /b
-exit /b 0
+if %NEST_LVL% LEQ 0 pause
 
-:CHECK_VARS_CONFIG
-if exist "%~1/config.vars" (
-  set VARS_CONFIG_FOUND=1
-  exit /b 1
-)
-exit /b 0
-
+exit /b %LASTERROR%

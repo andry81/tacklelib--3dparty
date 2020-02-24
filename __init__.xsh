@@ -23,9 +23,10 @@ for config_dir in [CONFIGURE_ROOT + '/' + LOCAL_CONFIG_DIR_NAME, CONFIGURE_ROOT]
   if not os.path.exists(config_dir):
     continue
 
-  if os.path.isfile(os.path.join(config_dir, 'config.private.yaml')):
+  if os.path.isfile(os.path.join(config_dir, 'config.private.yaml.in')) and os.path.isfile(os.path.join(config_dir, 'config.private.yaml')):
     yaml_load_config(config_dir, 'config.private.yaml')
     is_config_private_loaded = True
+    break # break on success
 
 if not is_config_private_loaded:
   raise Exception(
@@ -33,3 +34,21 @@ if not is_config_private_loaded:
     'call to `configure.*` to generate the rest of configuration files and affected by the `*.HUB_ABBR` variable scripts. '
     'The `*.HUB_ABBR` must begins by one of these values: [SVN, GIT].'
   )
+
+for config_dir in [CONFIGURE_ROOT + '/' + LOCAL_CONFIG_DIR_NAME, CONFIGURE_ROOT]:
+  if not os.path.exists(config_dir):
+    continue
+
+  if os.path.isfile(os.path.join(config_dir, 'config.yaml.in')) and os.path.isfile(os.path.join(config_dir, 'config.yaml')):
+    yaml_load_config(config_dir, 'config.yaml', to_globals = True, to_environ = False,
+      search_by_global_pred_at_third = lambda var_name: getglobalvar(var_name))
+    break # break on success
+
+for config_dir in [CONFIGURE_ROOT + '/' + LOCAL_CONFIG_DIR_NAME, CONFIGURE_ROOT]:
+  if not os.path.exists(config_dir):
+    continue
+
+  if os.path.isfile(os.path.join(config_dir, 'config.env.yaml.in')) and os.path.isfile(os.path.join(config_dir, 'config.env.yaml')):
+    yaml_load_config(config_dir, 'config.env.yaml', to_globals = False, to_environ = True,
+      search_by_environ_pred_at_third = lambda var_name: getglobalvar(var_name))
+    break # break on success

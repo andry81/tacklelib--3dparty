@@ -11,7 +11,7 @@ SVN_SF.USER:         user
 #GIT_GH.HUB_ABBR:     gh
 #GIT_GH.REPO_OWNER:   owner
 #GIT_GH.USER:         user
-#GIT_GH.SVNSSH.USER:  ${SVN.USER}
+#GIT_GH.SVNSSH.USER:  ${SVN_SF.USER}
 #GIT_GH.EMAIL:        user@mail.com
 
 SVN_SF.PROJECT_PATH_LIST:
