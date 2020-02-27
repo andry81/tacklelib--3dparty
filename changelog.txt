@@ -1,3 +1,6 @@
+2020.02.27:
+* changed: removed scheme from svn externals
+
 2020.02.25:
 * changed: _config: merge with the pyxvcs project
 
