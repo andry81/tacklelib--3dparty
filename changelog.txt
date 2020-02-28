@@ -1,4 +1,8 @@
 2020.02.27:
+* new: `__init__.bat` script port into `__init__.sh` script
+* new: `configure.bat` script port into `configure.sh` script
+
+2020.02.27:
 * changed: removed scheme from svn externals
 
 2020.02.25:

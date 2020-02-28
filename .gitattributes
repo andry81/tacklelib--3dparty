@@ -1,6 +1,7 @@
 * text=auto !eol
 /README_EN.txt -text
 /__init__.bat -text
+/__init__.sh -text
 /__init__.xsh -text
 _config/config.env.yaml.in -text
 _config/config.private.yaml.in -text
@@ -24,6 +25,7 @@ _scripts/01_checkout/__init__.bat -text
 _scripts/__init__.bat -text
 /changelog.txt -text
 /configure.bat -text
+/configure.sh -text
 /environment.vars.in -text
 /install_python_modules.bat -text
 /license.txt -text
