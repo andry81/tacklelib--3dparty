@@ -1,3 +1,19 @@
+2020.04.03:
+* new: _config: QT variables in case of usage
+
+2020.04.03:
+* changed: minor cleanup
+
+2020.04.03:
+* fixed: configure script execution without existence of the `_config/config.vars` file
+* new: _config: explicit usage of the global config `TACKLELIB_LOG_IMPORT_MODULE` parameter in the `config.vars` file
+
+2020.03.03:
+* changed: readme update
+
+2020.02.27:
+* changed: readme update
+
 2020.02.27:
 * new: `__init__.bat` script port into `__init__.sh` script
 * new: `configure.bat` script port into `configure.sh` script

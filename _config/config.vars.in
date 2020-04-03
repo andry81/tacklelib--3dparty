@@ -11,3 +11,5 @@ CHCP=1251
 # custom user executables
 # GIT_EXEC="c:/program files/git/bin/git.exe"
 # SVN_EXEC="c:/program files/svn/bin/svn.exe"
+
+TACKLELIB_LOG_IMPORT_MODULE=1

@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Script can be ONLY included by "source" command.
-if [[ -n "$BASH" && (-z "$BASH_LINENO" || ${BASH_LINENO[0]} -gt 0) ]] && (( ! ${#__BASE_INIT__} )); then 
+if [[ -n "$BASH" && (-z "$BASH_LINENO" || BASH_LINENO[0] -gt 0) ]] && (( ! __BASE_INIT__ )); then 
 
-export __BASE_INIT__=1 # including guard
+__BASE_INIT__=1 # including guard
 
 source "/bin/bash_entry" || exit $?
 
