@@ -1,3 +1,13 @@
+2020.04.05:
+* new: bash configure and project scripts
+* new: configure scripts self logging
+* changed: update with latest `pyxvcs` project implementation
+* changed: `04_configure.yaml.*` splitted into `04_configure.root_yaml.*` and `05_configure.project_yaml.*` scripts to separately generate root yaml configuration files and project yaml configuration files
+* changed: `05_configure.*` now generates project scripts for a single shell extension (either `*.bat` or `*.sh`)
+* changed: readme update
+* refactor: project scripts self logging refactor
+* refactor: python scripts moved to standalone directory
+
 2020.04.03:
 * new: _config: QT variables in case of usage
 

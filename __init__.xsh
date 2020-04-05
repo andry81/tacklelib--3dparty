@@ -30,8 +30,8 @@ for config_dir in [CONFIGURE_ROOT + '/' + LOCAL_CONFIG_DIR_NAME, CONFIGURE_ROOT]
 
 if not is_config_private_loaded:
   raise Exception(
-    'The `config.private.yaml` is not generated, call to `configure.private.*` script, edit `*.HUB_ABBR` variable values and '
-    'call to `configure.*` to generate the rest of configuration files and affected by the `*.HUB_ABBR` variable scripts. '
+    'The `config.private.yaml` is not generated, call to `*configure.private.*` script, edit `*.HUB_ABBR` variable values and '
+    'call to `*configure.*` to generate the rest of configuration files and affected by the `*.HUB_ABBR` variable scripts. '
     'The `*.HUB_ABBR` must begins by one of these values: [SVN, GIT].'
   )
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script can be ONLY included by "source" command.
-if [[ -n "$BASH" && (-z "$BASH_LINENO" || BASH_LINENO[0] -gt 0) ]] && (( ! __BASE_INIT__ )); then 
+if [[ -n "$BASH" && (-z "$BASH_LINENO" || BASH_LINENO[0] -gt 0) ]] && (( ! __BASE_INIT__ )); then
 
 __BASE_INIT__=1 # including guard
 
@@ -17,57 +17,36 @@ export LOCAL_CONFIG_DIR_NAME=_config
 
 export PYXVCS_SCRIPTS_ROOT="$CONFIGURE_ROOT/_pyxvcs"
 export CONTOOLS_ROOT="$PYXVCS_SCRIPTS_ROOT/tools"
-export TACKLELIB_ROOT="$PYXVCS_SCRIPTS_ROOT/tools/tacklelib"
-export CMDOPLIB_ROOT="$PYXVCS_SCRIPTS_ROOT/tools/cmdoplib"
+export TACKLELIB_ROOT="$PYXVCS_SCRIPTS_ROOT/tools/python/tacklelib"
+export CMDOPLIB_ROOT="$PYXVCS_SCRIPTS_ROOT/tools/python/cmdoplib"
 export TMPL_CMDOP_FILES_DIR="$CONFIGURE_ROOT/$LOCAL_CONFIG_DIR_NAME/tmpl"
 
-function Return()
-{
-  [[ -n "$1" ]] && return $1
-}
-
-function SetError()
-{
-  if [[ -n "$1" ]]; then
-    LastError=$1
-    return $LastError
-  fi
-}
-
-function Call()
-{
-  echo ">$@"
-  echo
-  tkl_make_source_file_components_from_file_path "$1"
-  "$@"
-  LastError=$?
-  return $LastError
-}
+tkl_include "$CONTOOLS_ROOT/bash/tacklelib/buildlib.sh" || exit $?
 
 function load_config()
 {
-  SetError 0
+  tkl_set_error 0
 
   local is_loaded=0
   local IFS=$' \t\n'
   local i
   for i in "$CONFIGURE_ROOT/$LOCAL_CONFIG_DIR_NAME" "$CONFIGURE_ROOT"; do
     if [[ -e "$i/config.vars.in" && -e "$i/config.vars" ]]; then
-      Call "$CONTOOLS_ROOT/load_config.sh" "$i" "config.vars" && {
+      tkl_call_inproc_entry load_config "$CONTOOLS_ROOT/load_config.sh" "$i" "config.vars" && {
         is_loaded=1
         break
       }
     fi
   done
 
-  if (( is_loaded == 0 && MUST_LOAD_CONFIG != 0 )); then
+  if (( ! is_loaded && MUST_LOAD_CONFIG != 0 )); then
     echo "$0: error: \`config.vars\` is not loaded." >&2
-    SetError 255
+    tkl_set_error 255
   fi
 }
 
 load_config
 
-Return $LastError
+tkl_set_return $tkl__last_error
 
 fi

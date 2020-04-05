@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Script ONLY for execution.
+if [[ -n "$BASH" && (-z "$BASH_LINENO" || BASH_LINENO[0] -eq 0) ]]; then
+
+source "/bin/bash_entry" || exit $?
+tkl_include "__init__.sh" || exit $?
+
+CONFIGURE_DIR="$BASH_SOURCE_DIR"
+
+tkl_call_inproc_entry cmdop "$PYXVCS_SCRIPTS_ROOT/$CMDOP_BASE_SCRIPT_FILE_NAME" "$CONFIGURE_DIR" {SCM_TOKEN} init "$@"
+tkl_set_error $?
+
+tkl_set_return $tkl__last_error
+
+fi

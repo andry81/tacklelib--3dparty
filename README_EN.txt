@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2020.03.03
+* 2020.04.05
 * tacklelib--3dparty
 
 1. DESCRIPTION
@@ -348,15 +348,16 @@ From the `01_checkout` subdirectory:
    Edit `*.HUB_ABBR` and `*.PROJECT_PATH_LIST` variables to define how and
    where to generate respective command scripts.
    Edit all other variables from the `config.private.yaml` file.
-3. Run the `03_configure.yaml.*` script.
+3. Run the `03_configure.root_yaml.*` script.
    Edit `SVN_SSH_ENABLED` and `GIT_SSH_ENABLED` variables to properly
    enable/disable ssh protocol usage from the svn/git utilities.
    Edit `SVN_SSH_AGENT`, `GIT_SSH_AGENT`, `GIT_SVN_SSH_AGENT` variables related
    to the ssh protocol.
+4. Run the `04_configure.project_yaml.*` script.
    Edit the `WCROOT_OFFSET` variable in the respective `config.yaml` file
    and change the default working copies directory structure if is required to.
    Edit all other variables in `config.yaml` and `config.env.yaml` files.
-4. Run the `04_configure.*` script.
+5. Run the `05_configure.*` script.
 
 Note:
   You can run respective configure scripts from a nested directory to apply
