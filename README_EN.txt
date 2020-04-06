@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2020.04.05
+* 2020.04.06
 * tacklelib--3dparty
 
 1. DESCRIPTION
@@ -33,7 +33,8 @@
 -------------------------------------------------------------------------------
 1. DESCRIPTION
 -------------------------------------------------------------------------------
-Third party projects for the tacklelib project.
+Tacklelib 3dparty (tacklelib--3dparty) project, initial steps for both
+the Windows and the Linux like targets and related build issues.
 
 -------------------------------------------------------------------------------
 2. LICENSE
@@ -76,7 +77,12 @@ IDE's, applications and patches to run with or from:
 1. OS platforms:
 
 * Windows 7 (`.bat` only, minimal version for the cmake 3.14)
-* Cygwin 1.7.x (`.sh` only)
+* Cygwin 1.5+ or 3.0+ (`.sh` only):
+  https://cygwin.com
+  - to run scripts under cygwin
+* Msys2 20190524+ (`.sh` only):
+  https://www.msys2.org
+  - to run scripts under msys2
 * Linux Mint 18.3 x64 (`.sh` only)
 
 2. C++11 compilers:
@@ -89,7 +95,9 @@ IDE's, applications and patches to run with or from:
 
 * bash shell 3.2.48+
   - to run unix shell scripts
-* python 3.7.3 or 3.7.5 (3.4+ or 3.5+)
+* perl 5.10+
+  - to run specific bash script functions with `perl` calls
+* python 3.7.3 or 3.7.5 (3.5+)
   https://python.org
   - standard implementation to run python scripts
   - 3.7.4 has a bug in the `pytest` module execution, see `KNOWN ISSUES`
@@ -140,10 +148,15 @@ Not required.
 * subversion 1.8+
   https://tortoisesvn.net
   - to run svn client
-
 * git 2.24+
   https://git-scm.com
   - to run git client
+* cygwin cygpath 1.42+
+  - to run `bash_entry` script under cygwin
+* msys cygpath 3.0+
+  - to run `bash_entry` script under msys2
+* cygwin readlink 6.10+
+  - to run specific bash script functions with `readlink` calls
 
 7. Patches:
 

@@ -1,3 +1,7 @@
+2020.04.06:
+* new: `README_EN.linux_x86_64.txt` readme file
+* changed: readme update
+
 2020.04.05:
 * new: bash configure and project scripts
 * new: configure scripts self logging
