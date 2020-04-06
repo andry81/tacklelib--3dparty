@@ -385,10 +385,6 @@ From the `01_checkout` subdirectory:
 Note:
   Step 6 must be issued in the terminal with appropriate permissions.
 
-Note:
-  You can run respective configure scripts from a nested directory to apply
-  configuration separately in that nested directory.
-
 -------------------------------------------------------------------------------
 10. USAGE
 -------------------------------------------------------------------------------
