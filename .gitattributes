@@ -38,6 +38,7 @@ _scripts/01_checkout/04_configure.project_yaml.bat -text
 _scripts/01_checkout/04_configure.project_yaml.sh -text
 _scripts/01_checkout/05_configure.bat -text
 _scripts/01_checkout/05_configure.sh -text
+_scripts/01_checkout/06_configure.chmod.sh -text
 _scripts/01_checkout/__init__.bat -text
 _scripts/01_checkout/__init__.sh -text
 _scripts/__init__.bat -text
@@ -47,4 +48,5 @@ _scripts/__init__.sh -text
 /configure.sh -text
 /environment.vars.in -text
 /install_python_modules.bat -text
+/install_python_modules.sh -text
 /license.txt -text

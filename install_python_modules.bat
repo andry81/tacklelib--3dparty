@@ -1,6 +1,10 @@
 @echo off
 
-set "PYTHON_EXE_PATH=c:/python/x86/38/python.exe"
+setlocal
+
+set "PYTHON_EXE_PATH=%~1"
+
+if not defined PYTHON_EXE_PATH set "PYTHON_EXE_PATH=c:/python/x86/38/python.exe"
 
 call :CMD "%%PYTHON_EXE_PATH%%" -m pip install pip --upgrade || goto EXIT
 call :CMD "%%PYTHON_EXE_PATH%%" -m pip install setuptools --upgrade || goto EXIT

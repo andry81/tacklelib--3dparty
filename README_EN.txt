@@ -26,6 +26,8 @@
         `svn: E210002: Network connection closed unexpectedly`
 12.2. Python execution issues
 12.2.1. `OSError: [WinError 6] The handle is invalid`
+12.2.2. `ValueError: 'cwd' in __slots__ conflicts with class variable`
+12.2.3. `TypeError: descriptor 'combine' for type 'datetime.datetime' doesn't apply to type 'datetime'`
 12.3. pytest execution issues
 12.4. fcache execution issues
 13. AUTHOR
@@ -97,11 +99,13 @@ IDE's, applications and patches to run with or from:
   - to run unix shell scripts
 * perl 5.10+
   - to run specific bash script functions with `perl` calls
-* python 3.7.3 or 3.7.5 (3.5+)
+* python 3.7.3 or 3.7.5 (3.6.2+)
   https://python.org
   - standard implementation to run python scripts
-  - 3.7.4 has a bug in the `pytest` module execution, see `KNOWN ISSUES`
-    section
+  - 3.7.4 has a bug in the `pytest` module execution (see `KNOWN ISSUES`
+    section).
+  - 3.6.2+ is required due to multiple bugs in the python implementation prior
+    this version (see `KNOWN ISSUES` section).
   - 3.5+ is required for the direct import by a file path (with any extension)
     as noted in the documentation:
     https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly
@@ -169,7 +173,6 @@ Not required.
 -------------------------------------------------------------------------------
 5. DEPENDENCIES
 -------------------------------------------------------------------------------
-
 Any project which is dependent on this project have has to contain the
 `README_EN.deps.txt` description file for the common dependencies in the
 Windows and in the Linux like platforms.
@@ -178,6 +181,11 @@ NOTE:
   To run bash shell scripts (`.sh` file extension) you should copy from the
   `tacklelib` library the `/bash/tacklelib/bash_entry` module into the `/bin`
   directory of your platform.
+
+NOTE:
+  To install python all required modules at once you can use
+  `install_python_modules.*` script as:
+  `install_python_modules.* <path-to-pathon-executable>`
 
 The project contains dependencies which must be taken and stored manually into
 `_src` directory, these are:
@@ -371,6 +379,11 @@ From the `01_checkout` subdirectory:
    and change the default working copies directory structure if is required to.
    Edit all other variables in `config.yaml` and `config.env.yaml` files.
 5. Run the `05_configure.*` script.
+6. (Only in case of usage the Linux like environment)
+   Run the `06_configure.chmod.*` script.
+
+Note:
+  Step 6 must be issued in the terminal with appropriate permissions.
 
 Note:
   You can run respective configure scripts from a nested directory to apply
@@ -508,30 +521,30 @@ For the issues around python xonsh module see details in the
 
 Issue #1:
 
-The `svn ...` command was run w/o properly configured putty plink utility or
-w/o the `SVN_SSH` environment variable with the user name parameter.
+  The `svn ...` command was run w/o properly configured putty plink utility or
+  w/o the `SVN_SSH` environment variable with the user name parameter.
 
 Solution:
 
-Carefully read the `SSH+SVN/PLINK SETUP` section to fix most of the cases.
+  Carefully read the `SSH+SVN/PLINK SETUP` section to fix most of the cases.
 
 Issue #2
 
-The `SVN_SSH` environment variable have has the backslash characters - `\`.
+  The `SVN_SSH` environment variable have has the backslash characters - `\`.
 
 Solution:
 
-Replace all the backslash characters by forward slash character - `/` or by
-double baskslash character - `\\`.
+  Replace all the backslash characters by forward slash character - `/` or by
+  double baskslash character - `\\`.
 
 Issue #3
 
-The `config.private.yaml` contains invalid values or was regenerated to
-default values.
+  The `config.private.yaml` contains invalid values or was regenerated to
+  default values.
 
 Solution:
 
-Manually edit variables in the file for correct values.
+  Manually edit variables in the file for correct values.
 
 -------------------------------------------------------------------------------
 12.1.2. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
@@ -541,14 +554,14 @@ Manually edit variables in the file for correct values.
 
 Issue:
 
-The `git svn ...` command should not be called with the `SVN_SSH` variable
-declared for the `svn ...` command.
+  The `git svn ...` command should not be called with the `SVN_SSH` variable
+  declared for the `svn ...` command.
 
 Solution:
 
-Read docs about the `ssh-pageant` usage from the msys tools to fix that.
+  Read docs about the `ssh-pageant` usage from the msys tools to fix that.
 
-See details: https://stackoverflow.com/questions/31443842/svn-hangs-on-checkout-in-windows/58613014#58613014
+  See details: https://stackoverflow.com/questions/31443842/svn-hangs-on-checkout-in-windows/58613014#58613014
 
 NOTE:
   The scripts does automatic maintain of the `ssh-pageant` utility startup.
@@ -566,20 +579,20 @@ Related command: `git svn ...`
 
 Issue #1:
 
-Network is disabled:
+  Network is disabled:
 
 Issue #2:
 
-The `pageant` application is not running or the provate SSH key is not added.
+  The `pageant` application is not running or the provate SSH key is not added.
 
 Issue #3:
 
-The `ssh-pageant` utility is not running or the `git svn ...` command does run
-without the `SSH_AUTH_SOCK` environment variable properly registered.
+  The `ssh-pageant` utility is not running or the `git svn ...` command does
+  run without the `SSH_AUTH_SOCK` environment variable properly registered.
 
 Solution:
 
-Read the deatils in the `SSH+SVN/PLINK SETUP` section.
+  Read the deatils in the `SSH+SVN/PLINK SETUP` section.
 
 -------------------------------------------------------------------------------
 12.2. Python execution issues
@@ -591,12 +604,55 @@ Read the deatils in the `SSH+SVN/PLINK SETUP` section.
 
 Issue:
 
-The python interpreter (3.7, 3.8, 3.9) sometimes throws this message at exit,
-see details here: https://bugs.python.org/issue37380
+  The python interpreter (3.7, 3.8, 3.9) sometimes throws this message at exit,
+  see details here:
+
+  `subprocess.Popen._cleanup() "The handle is invalid" error when some old process is gone` :
+  https://bugs.python.org/issue37380
 
 Solution:
 
-Reinstall a different python version.
+  Reinstall a different python version.
+
+-------------------------------------------------------------------------------
+12.2.2. `ValueError: 'cwd' in __slots__ conflicts with class variable`
+-------------------------------------------------------------------------------
+
+Stack trace example:
+
+  File ".../python/tacklelib/tacklelib.py", line 265, in tkl_classcopy
+    cls_copy = type(x.__name__, x.__bases__, dict(x.__dict__))
+
+Issue:
+
+  Bug in the python implementation prior version 3.5.4 or 3.6.2:
+
+  https://stackoverflow.com/questions/45864273/slots-conflicts-with-a-class-variable-in-a-generic-class/45868049#45868049
+  `typing module conflicts with __slots__-classes` :
+  https://bugs.python.org/issue31272
+
+Solution:
+
+  Upgrade python version at least up to 3.5.4 or 3.6.2.
+
+-------------------------------------------------------------------------------
+12.2.3. `TypeError: descriptor 'combine' for type 'datetime.datetime' doesn't apply to type 'datetime'`
+-------------------------------------------------------------------------------
+
+Stack trace example:
+
+  File ".../python/tacklelib/tacklelib.py", line 278, in tkl_classcopy
+    for key, value in dict(inspect.getmembers(x)).items():
+  File ".../python/x86/35/lib/python3.5/inspect.py", line 309, in getmembers
+    value = getattr(object, key)
+
+Issue:
+
+  Bug in the python implementation prior version 3.6.2:
+
+Solution:
+
+  Upgrade python version at least up to 3.6.2.
 
 -------------------------------------------------------------------------------
 12.3. pytest execution issues
