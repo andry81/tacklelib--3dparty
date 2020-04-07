@@ -673,7 +673,7 @@ Issue #1:
 
 Issue #2:
 
-  The `pageant` application is not running or the provate SSH key is not added.
+  The `pageant` application is not running or the private SSH key is not added.
 
 Issue #3:
 
