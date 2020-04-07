@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2020.04.06
+* 2020.04.07
 * tacklelib--3dparty
 
 1. DESCRIPTION
@@ -14,22 +14,24 @@
 10. USAGE
 11. SSH+SVN/PLINK SETUP
 12. KNOWN ISSUES
-12.1. svn+ssh issues
-12.1.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
-        `svn: E170012: Can't create tunnel`
-12.1.2. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
-        `To better debug SSH connection problems, remove the -q option from ssh' in the [tunnels] section of your Subversion configuration file. `
-        `at .../Git/mingw64/share/perl5/Git/SVN.pm line 310.'`
-12.1.3. Message `Keyboard-interactive authentication prompts from server:`
-        `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
-        `svn: E210002: To better debug SSH connection problems, remove the -q option from 'ssh' in the [tunnels] section of your Subversion configuration file.`
-        `svn: E210002: Network connection closed unexpectedly`
-12.2. Python execution issues
-12.2.1. `OSError: [WinError 6] The handle is invalid`
-12.2.2. `ValueError: 'cwd' in __slots__ conflicts with class variable`
-12.2.3. `TypeError: descriptor 'combine' for type 'datetime.datetime' doesn't apply to type 'datetime'`
-12.3. pytest execution issues
-12.4. fcache execution issues
+12.1. Python execution issues
+12.1.1. `OSError: [WinError 6] The handle is invalid`
+12.1.2. `ValueError: 'cwd' in __slots__ conflicts with class variable`
+12.1.3. `TypeError: descriptor 'combine' for type 'datetime.datetime' doesn't apply to type 'datetime'`
+12.2. Python modules issues
+12.2.1. pytest execution issues
+12.2.2. fcache execution issues
+12.3. External application issues
+12.3.1. svn+ssh issues
+12.3.1.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
+          `svn: E170012: Can't create tunnel`
+12.3.1.2. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
+          `To better debug SSH connection problems, remove the -q option from ssh' in the [tunnels] section of your Subversion configuration file. `
+          `at .../Git/mingw64/share/perl5/Git/SVN.pm line 310.'`
+12.3.1.3. Message `Keyboard-interactive authentication prompts from server:`
+          `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
+          `svn: E210002: To better debug SSH connection problems, remove the -q option from 'ssh' in the [tunnels] section of your Subversion configuration file.`
+          `svn: E210002: Network connection closed unexpectedly`
 13. AUTHOR
 
 -------------------------------------------------------------------------------
@@ -181,6 +183,10 @@ NOTE:
   To run bash shell scripts (`.sh` file extension) you should copy from the
   `tacklelib` library the `/bash/tacklelib/bash_entry` module into the `/bin`
   directory of your platform.
+
+NOTE: Make a script executable in the Linux:
+  sudo chmod ug+x <script>
+  sudo chmod o+r <script>
 
 NOTE:
   To install python all required modules at once you can use
@@ -507,12 +513,100 @@ For the issues around python xonsh module see details in the
 `README_EN.python_xonsh.known_issues.txt` file.
 
 -------------------------------------------------------------------------------
-12.1. svn+ssh issues
+12.1. Python execution issues
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-12.1.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
-        `svn: E170012: Can't create tunnel`
+12.1.1. `OSError: [WinError 6] The handle is invalid`
+-------------------------------------------------------------------------------
+
+Issue:
+
+  The python interpreter (3.7, 3.8, 3.9) sometimes throws this message at exit,
+  see details here:
+
+  `subprocess.Popen._cleanup() "The handle is invalid" error when some old process is gone` :
+  https://bugs.python.org/issue37380
+
+Solution:
+
+  Reinstall a different python version.
+
+-------------------------------------------------------------------------------
+12.1.2. `ValueError: 'cwd' in __slots__ conflicts with class variable`
+-------------------------------------------------------------------------------
+
+Stack trace example:
+
+  File ".../python/tacklelib/tacklelib.py", line 265, in tkl_classcopy
+    cls_copy = type(x.__name__, x.__bases__, dict(x.__dict__))
+
+Issue:
+
+  Bug in the python implementation prior version 3.5.4 or 3.6.2:
+
+  https://stackoverflow.com/questions/45864273/slots-conflicts-with-a-class-variable-in-a-generic-class/45868049#45868049
+  `typing module conflicts with __slots__-classes` :
+  https://bugs.python.org/issue31272
+
+Solution:
+
+  Upgrade python version at least up to 3.5.4 or 3.6.2.
+
+-------------------------------------------------------------------------------
+12.1.3. `TypeError: descriptor 'combine' for type 'datetime.datetime' doesn't apply to type 'datetime'`
+-------------------------------------------------------------------------------
+
+Stack trace example:
+
+  File ".../python/tacklelib/tacklelib.py", line 278, in tkl_classcopy
+    for key, value in dict(inspect.getmembers(x)).items():
+  File ".../python/x86/35/lib/python3.5/inspect.py", line 309, in getmembers
+    value = getattr(object, key)
+
+Issue:
+
+  Bug in the python implementation prior version 3.6.2:
+
+Solution:
+
+  Upgrade python version at least up to 3.6.2.
+
+-------------------------------------------------------------------------------
+12.2. Python modules issues
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+12.2.1. pytest execution issues
+-------------------------------------------------------------------------------
+* `xonsh incorrectly reorders the test for the pytest` :
+  https://github.com/xonsh/xonsh/issues/3380
+* `a test silent ignore` :
+  https://github.com/pytest-dev/pytest/issues/6113
+* `can not order tests by a test directory path` :
+  https://github.com/pytest-dev/pytest/issues/6114
+
+-------------------------------------------------------------------------------
+12.2.2. fcache execution issues
+-------------------------------------------------------------------------------
+* `fcache is not multiprocess aware on Windows` :
+  https://github.com/tsroten/fcache/issues/26
+* ``_read_from_file` returns `None` instead of (re)raise an exception` :
+  https://github.com/tsroten/fcache/issues/27
+* `OSError: [WinError 17] The system cannot move the file to a different disk drive.` :
+  https://github.com/tsroten/fcache/issues/28
+
+-------------------------------------------------------------------------------
+12.3. External application issues
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+12.3.1. svn+ssh issues
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+12.3.1.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
+          `svn: E170012: Can't create tunnel`
 -------------------------------------------------------------------------------
 
 Issue #1:
@@ -543,9 +637,9 @@ Solution:
   Manually edit variables in the file for correct values.
 
 -------------------------------------------------------------------------------
-12.1.2. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
-        `To better debug SSH connection problems, remove the -q option from ssh' in the [tunnels] section of your Subversion configuration file. `
-        `at .../Git/mingw64/share/perl5/Git/SVN.pm line 310.'`
+12.3.1.2. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
+          `To better debug SSH connection problems, remove the -q option from ssh' in the [tunnels] section of your Subversion configuration file. `
+          `at .../Git/mingw64/share/perl5/Git/SVN.pm line 310.'`
 -------------------------------------------------------------------------------
 
 Issue:
@@ -565,10 +659,10 @@ NOTE:
   the respective configuration files.
 
 -------------------------------------------------------------------------------
-12.1.3. Message `Keyboard-interactive authentication prompts from server:`
-        `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
-        `svn: E210002: To better debug SSH connection problems, remove the -q option from 'ssh' in the [tunnels] section of your Subversion configuration file.`
-        `svn: E210002: Network connection closed unexpectedly`
+12.3.1.3. Message `Keyboard-interactive authentication prompts from server:`
+          `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
+          `svn: E210002: To better debug SSH connection problems, remove the -q option from 'ssh' in the [tunnels] section of your Subversion configuration file.`
+          `svn: E210002: Network connection closed unexpectedly`
 -------------------------------------------------------------------------------
 
 Related command: `git svn ...`
@@ -589,86 +683,6 @@ Issue #3:
 Solution:
 
   Read the deatils in the `SSH+SVN/PLINK SETUP` section.
-
--------------------------------------------------------------------------------
-12.2. Python execution issues
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
-12.2.1. `OSError: [WinError 6] The handle is invalid`
--------------------------------------------------------------------------------
-
-Issue:
-
-  The python interpreter (3.7, 3.8, 3.9) sometimes throws this message at exit,
-  see details here:
-
-  `subprocess.Popen._cleanup() "The handle is invalid" error when some old process is gone` :
-  https://bugs.python.org/issue37380
-
-Solution:
-
-  Reinstall a different python version.
-
--------------------------------------------------------------------------------
-12.2.2. `ValueError: 'cwd' in __slots__ conflicts with class variable`
--------------------------------------------------------------------------------
-
-Stack trace example:
-
-  File ".../python/tacklelib/tacklelib.py", line 265, in tkl_classcopy
-    cls_copy = type(x.__name__, x.__bases__, dict(x.__dict__))
-
-Issue:
-
-  Bug in the python implementation prior version 3.5.4 or 3.6.2:
-
-  https://stackoverflow.com/questions/45864273/slots-conflicts-with-a-class-variable-in-a-generic-class/45868049#45868049
-  `typing module conflicts with __slots__-classes` :
-  https://bugs.python.org/issue31272
-
-Solution:
-
-  Upgrade python version at least up to 3.5.4 or 3.6.2.
-
--------------------------------------------------------------------------------
-12.2.3. `TypeError: descriptor 'combine' for type 'datetime.datetime' doesn't apply to type 'datetime'`
--------------------------------------------------------------------------------
-
-Stack trace example:
-
-  File ".../python/tacklelib/tacklelib.py", line 278, in tkl_classcopy
-    for key, value in dict(inspect.getmembers(x)).items():
-  File ".../python/x86/35/lib/python3.5/inspect.py", line 309, in getmembers
-    value = getattr(object, key)
-
-Issue:
-
-  Bug in the python implementation prior version 3.6.2:
-
-Solution:
-
-  Upgrade python version at least up to 3.6.2.
-
--------------------------------------------------------------------------------
-12.3. pytest execution issues
--------------------------------------------------------------------------------
-* `xonsh incorrectly reorders the test for the pytest` :
-  https://github.com/xonsh/xonsh/issues/3380
-* `a test silent ignore` :
-  https://github.com/pytest-dev/pytest/issues/6113
-* `can not order tests by a test directory path` :
-  https://github.com/pytest-dev/pytest/issues/6114
-
--------------------------------------------------------------------------------
-12.4. fcache execution issues
--------------------------------------------------------------------------------
-* `fcache is not multiprocess aware on Windows` :
-  https://github.com/tsroten/fcache/issues/26
-* ``_read_from_file` returns `None` instead of (re)raise an exception` :
-  https://github.com/tsroten/fcache/issues/27
-* `OSError: [WinError 17] The system cannot move the file to a different disk drive.` :
-  https://github.com/tsroten/fcache/issues/28
 
 -------------------------------------------------------------------------------
 13. AUTHOR

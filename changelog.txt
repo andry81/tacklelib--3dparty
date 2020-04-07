@@ -1,3 +1,6 @@
+2020.04.07:
+* changed: readme update
+
 2020.04.06:
 * new: 06_configure.chmod.sh: script permissions update
 * new: `install_python_modules.sh` script to install python modules in the Linux shell all together
