@@ -31,17 +31,21 @@ CONFIGURE_DIR="$BASH_SOURCE_DIR"
       ;;
   esac
 
-  (
-  (
-    exec $0 "$@"
-  ) | tee -a "$CONFIGURE_DIR/.log/${LOG_FILE_NAME_SUFFIX}.${BASH_SOURCE_FILE_NAME}.log" 2>&1
-  ) 1>&3 2>&4
+  # stdout+stderr redirection into the same log file with handles restore
+  {
+  {
+  {
+    exec $0 "$@" 2>&1 1>&8
+  } | tee -a "$CONFIGURE_DIR/.log/${LOG_FILE_NAME_SUFFIX}.${BASH_SOURCE_FILE_NAME}.log" 1>&9
+  } 8>&1 | tee "$CONFIGURE_DIR/.log/${LOG_FILE_NAME_SUFFIX}.${BASH_SOURCE_FILE_NAME}.log"
+  } 9>&2
 
   exit $?
 }
 
 (( NEST_LVL++ ))
 
+# calls as an external process only if can not make an inprocess call, a bash shell script always being called in the same process
 tkl_call_inproc_entry configure "$PYXVCS_SCRIPTS_ROOT/$CONFIGURE_BASE_SCRIPT_FILE_NAME" "$CONFIGURE_DIR" sh --chmod_scripts "$@"
 tkl_set_error $?
 

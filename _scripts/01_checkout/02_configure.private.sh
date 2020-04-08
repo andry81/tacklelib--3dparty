@@ -31,11 +31,14 @@ CONFIGURE_DIR="$BASH_SOURCE_DIR"
       ;;
   esac
 
-  (
-  (
-    exec $0 "$@"
-  ) | tee -a "$CONFIGURE_DIR/.log/${LOG_FILE_NAME_SUFFIX}.${BASH_SOURCE_FILE_NAME}.log" 2>&1
-  ) 1>&3 2>&4
+  # stdout+stderr redirection into the same log file with handles restore
+  {
+  {
+  {
+    exec $0 "$@" 2>&1 1>&8
+  } | tee -a "$CONFIGURE_DIR/.log/${LOG_FILE_NAME_SUFFIX}.${BASH_SOURCE_FILE_NAME}.log" 1>&9
+  } 8>&1 | tee "$CONFIGURE_DIR/.log/${LOG_FILE_NAME_SUFFIX}.${BASH_SOURCE_FILE_NAME}.log"
+  } 9>&2
 
   exit $?
 }
