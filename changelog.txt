@@ -1,3 +1,6 @@
+2020.04.11:
+* fixed: unix shell `tee` utility accidentally loses output if run in pipe without append mode
+
 2020.04.08:
 * fixed: correct unix shell script self redirection with original handles restore (windows batch scripts can not handle redirection such way, so left as is with mixed stdout output (stderr is left redirected to stdout))
 

@@ -37,7 +37,7 @@ CONFIGURE_DIR="$BASH_SOURCE_DIR"
   {
     exec $0 "$@" 2>&1 1>&8
   } | tee -a "$CONFIGURE_DIR/.log/${LOG_FILE_NAME_SUFFIX}.${BASH_SOURCE_FILE_NAME}.log" 1>&9
-  } 8>&1 | tee "$CONFIGURE_DIR/.log/${LOG_FILE_NAME_SUFFIX}.${BASH_SOURCE_FILE_NAME}.log"
+  } 8>&1 | tee -a "$CONFIGURE_DIR/.log/${LOG_FILE_NAME_SUFFIX}.${BASH_SOURCE_FILE_NAME}.log"
   } 9>&2
 
   exit $?
