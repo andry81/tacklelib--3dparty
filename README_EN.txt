@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2020.04.07
+* 2020.04.11
 * tacklelib--3dparty
 
 1. DESCRIPTION
@@ -12,7 +12,8 @@
 8. PRECONFIGURE
 9. CONFIGURE
 10. USAGE
-11. SSH+SVN/PLINK SETUP
+11. THIRD PARTY SETUP
+11.1. ssh+svn/plink setup
 12. KNOWN ISSUES
 12.1. Python execution issues
 12.1.1. `OSError: [WinError 6] The handle is invalid`
@@ -432,7 +433,11 @@ Any deploy script format:
                   scheme use these parameters: `https://` `svn+ssh://`).
 
 -------------------------------------------------------------------------------
-11. SSH+SVN/PLINK SETUP
+11. THIRD PARTY SETUP
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+11.1. ssh+svn/plink setup
 -------------------------------------------------------------------------------
 Based on: https://stackoverflow.com/questions/11345868/how-to-use-git-svn-with-svnssh-url/58641860#58641860
 
@@ -616,7 +621,7 @@ Issue #1:
 
 Solution:
 
-  Carefully read the `SSH+SVN/PLINK SETUP` section to fix most of the cases.
+  Carefully read the `ssh+svn/plink setup` section to fix most of the cases.
 
 Issue #2
 
@@ -682,7 +687,7 @@ Issue #3:
 
 Solution:
 
-  Read the deatils in the `SSH+SVN/PLINK SETUP` section.
+  Read the deatils in the `ssh+svn/plink setup` section.
 
 -------------------------------------------------------------------------------
 13. AUTHOR

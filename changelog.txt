@@ -1,4 +1,8 @@
 2020.04.11:
+* new: readme file over python xonsh module known issues
+* changed: readme file
+
+2020.04.11:
 * fixed: unix shell `tee` utility accidentally loses output if run in pipe without append mode
 
 2020.04.08:
