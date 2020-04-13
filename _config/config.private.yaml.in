@@ -7,12 +7,12 @@ SVN_SF.HUB_ROOT:     svn.code.sf.net/p
 SVN_SF.HUB_ABBR:     sf
 SVN_SF.USER:         user
 
-#GIT_GH.HUB_ROOT:     github.com
-#GIT_GH.HUB_ABBR:     gh
-#GIT_GH.REPO_OWNER:   owner
-#GIT_GH.USER:         user
-#GIT_GH.SVNSSH.USER:  ${SVN_SF.USER}
-#GIT_GH.EMAIL:        user@mail.com
+GIT_GH.HUB_ROOT:     github.com
+GIT_GH.HUB_ABBR:     gh
+GIT_GH.REPO_OWNER:   owner
+GIT_GH.USER:         user
+GIT_GH.SVNSSH.USER:  ${SVN_SF.USER}
+GIT_GH.EMAIL:        user@mail.com
 
 SVN_SF.PROJECT_PATH_LIST:
   # <root>
@@ -39,5 +39,8 @@ SVN_SF.PROJECT_PATH_LIST:
   - _scripts/01_checkout/tacklelib/utility/tacklelib
   - _scripts/01_checkout/tacklelib/utility/tacklelib/tacklelib
 
-#GIT_GH.PROJECT_PATH_LIST:
-#  - project_group/project
+GIT_GH.PROJECT_PATH_LIST:
+  # <root>
+  # utility
+  - _scripts/01_checkout/tacklelib/utility/boost
+  - _scripts/01_checkout/tacklelib/utility/boost/boost-1_72_0-release

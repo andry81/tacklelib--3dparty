@@ -1,4 +1,5 @@
 /*.vars
+/_cache
 _config/*.vars
 _config/*.yaml
 _scripts/01_checkout/*.bat

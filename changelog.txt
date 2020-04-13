@@ -1,3 +1,11 @@
+2020.04.13:
+* new: _scripts: boost library as pure git dependency
+* new: _config: `GIT_SVN_ENABLED` variable
+* changed: svn ignores
+
+2020.04.12:
+* changed: _scripts: project dependencies update
+
 2020.04.11:
 * new: readme file over python xonsh module known issues
 * changed: readme file
