@@ -1,0 +1,4 @@
+* svn/git backup through the svn dump and git fast export.
+  Pack the output dump file into 7zip archive and store it with the date,
+  time, revision/hash in the file name in a directory from a backups root
+  variable.
