@@ -1,3 +1,9 @@
+2020.04.26:
+* new: TODO file
+
+2020.04.20:
+* changed: readme update
+
 2020.04.13:
 * new: _scripts: boost library as pure git dependency
 * new: _config: `GIT_SVN_ENABLED` variable
