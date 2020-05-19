@@ -1,3 +1,6 @@
+2020.05.19:
+* changed: removed task from TODO as already has been created in the pyxvcs project
+
 2020.04.26:
 * new: TODO file
 
