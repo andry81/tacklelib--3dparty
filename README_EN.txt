@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2020.04.20
+* 2020.05.20
 * tacklelib--3dparty
 
 1. DESCRIPTION
@@ -155,9 +155,11 @@ Not required.
 * subversion 1.8+
   https://tortoisesvn.net
   - to run svn client
+
 * git 2.24+
   https://git-scm.com
   - to run git client
+
 * cygwin cygpath 1.42+
   - to run `bash_entry` script under cygwin
 * msys cygpath 3.0+
@@ -176,14 +178,15 @@ Not required.
 -------------------------------------------------------------------------------
 5. DEPENDENCIES
 -------------------------------------------------------------------------------
+
 Any project which is dependent on this project have has to contain the
 `README_EN.deps.txt` description file for the common dependencies in the
 Windows and in the Linux like platforms.
 
 NOTE:
-  To run bash shell scripts (`.sh` file extension) you should copy from the
-  `tacklelib` library the `/bash/tacklelib/bash_entry` module into the `/bin`
-  directory of your platform.
+  To run bash shell scripts (`.sh` file extension) you should copy the
+  `_pyxvcs/tools/bash/tacklelib/bash_entry` into the `/bin` directory of your
+  platform.
 
 NOTE: Make a script executable in the Linux:
   sudo chmod ug+x <script>
@@ -193,12 +196,6 @@ NOTE:
   To install python all required modules at once you can use
   `install_python_modules.*` script as:
   `install_python_modules.* <path-to-pathon-executable>`
-
-The project contains dependencies which must be taken and stored manually into
-`_src` directory, these are:
-
-* `boost` -> `_src/utility/boost/boost_1_72_0`:
-  https://boost.org
 
 -------------------------------------------------------------------------------
 6. CATALOG CONTENT DESCRIPTION
